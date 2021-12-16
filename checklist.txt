@@ -1,0 +1,13 @@
+Implement new features and pages
+================================
+
+- add new folder in pages w/ necessary HTML, js and css
+    - remember to add scripttag in the bottom of HTML 
+
+- pagesRouter:  
+    - serve page 
+
+- implement new router if necessary 
+
+- app.js:
+    - import and use new router

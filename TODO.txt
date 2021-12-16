@@ -1,0 +1,20 @@
+[x] Implementer UUID til threadsRouter
+[x] CRUD til threadsRouter
+[ ] Slet Mongoose fra depencies
+[ ] 
+[ ]     
+[x] lav login function i msgboard.js
+[x] encrypt nye brugeres kodeord
+[ ] Overvej af bruge helmet (npm helmet) (https://github.com/anderslatif/Kea_DAT_Node_2021_AUTUMN/blob/main/7._Middleware_Security/app.js). 
+    Husk at man skal kunne forklare hvad det er
+[ ]
+[x] Få toastr til at virke
+[ ] Implementer session
+[ ] find en god location at sende brugere hen hvis de er succesfulde med at logge in (msgboard.js, linje 79)
+[ ] 
+[ ] Sikre at flere brugere ikke kan have samme brugernavn og email
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
