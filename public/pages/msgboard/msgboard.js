@@ -14,8 +14,7 @@ function fetchThreads() {
             .insertAdjacentHTML('afterbegin', 
             `<div class="thread">
                 <button onclick="deleteThread('${escapeHTML(thread.threadId)}')" id="delete-thread">Delete</button>
-                Title: ${escapeHTML(thread.title)}, 
-                Msg: ${escapeHTML(thread.msg)}
+                <a href="/thread/${escapeHTML(thread.threadId)}">${escapeHTML(thread.title)}</a>
                 </div>`);
         })
     })
@@ -26,28 +25,7 @@ function fetchThreads() {
 
 fetchThreads();
 
-function createThread() {
-    fetch('/api/threads', {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json; charset=UTF-8' },
-        body: JSON.stringify({
-            title: document.getElementById('title').value,
-            msg: document.getElementById('msg').value
-        })
-    })
-    .then (res => {
-        if (!res.ok){
-            throw Error('Could not create thread');
-        } else {
 
-            //toastr.success("Thread created successfully")
-            setTimeout(() => location.href= '/msgboard', 1); //TODO: SÆT LÆNGERE TIMEOUT
-        }
-    })
-    .catch(error => {
-        console.log(error);
-    });
-}
 
 function deleteThread(threadId) {
     fetch(`/api/threads/${threadId}`, {
@@ -74,15 +52,9 @@ function login() {
             password: document.getElementById('password').value
         })
     }).then(res => {
-        console.log(res.JSON);
         if (res.ok) {
             toastr.success('Logging in...')
-            
-            // if (res.text === 'admin') {
-            //     setTimeout(() => location.href= '/admin', 1500);
-            //     } else {
-            //     setTimeout(() => location.href= '/signup', 1500); // TODO: Ret destination til
-            // }
+               setTimeout(() => location.href= '/signup', 1500); // TODO: Ret destination til
         }
         else {
             toastr.info("Couldn't login - Check password and try again.'")
@@ -94,13 +66,17 @@ function login() {
 
 
 
-document.getElementById('create-thread').addEventListener('click', createThread);
+document.getElementById('new-thread').addEventListener('click', () => {
+    location.href= '/createnewthread';
+});
 
 document.getElementById('sign-up').addEventListener('click', () => {
     location.href= '/signup';
 });
 
 document.getElementById('login').addEventListener('click', login);
+
+
 
 
 

@@ -19,11 +19,10 @@ router.post("/msgboard/login", async (req, res) => {
     if (user != null){
         bcrypt.compare(req.body.password, user.password, function(err, result) {
             if (result) {
-
-                //req.session.loggedIn = true; TODO: Skal rettes når jeg sætter SESSION på
-                res.status(200).json({ "username" : user.username});
+                req.session.loggedIn = true; 
+                res.sendStatus(200);
             } else {
-                res.sendStatus(400)
+                res.sendStatus(400);
             }
         });  
     }      

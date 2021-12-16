@@ -1,9 +1,19 @@
 
 import express from "express";
 const app = express();
+import session from "express-session";
+
 
 app.use(express.static("public"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: "shhhhhhhhh",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
 
 
 import threadsRouter from './routers/threadsRouter.js';

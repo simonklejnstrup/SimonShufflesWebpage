@@ -22,6 +22,14 @@ const adminPage = createPage("adminpage/adminpage.html", {
     title: "Simon Shuffles | Admin"
 });
 
+const createNewThreadPage = createPage("createnewthreadpage/createnewthreadpage.html", { 
+    title: "Simon Shuffles | Create New Thread"
+});
+
+const threadPage = createPage("threadpage/threadpage.html", { 
+    title: "Simon Shuffles | Thread"
+});
+
 
 /* Serve endpoints */
 /* Serve endpoints */
@@ -41,6 +49,17 @@ router.get("/signup", (req, res) => {
 
 router.get("/admin", (req, res) => {
     res.send(adminPage);
+});
+
+router.get("/createnewthread", (req, res) => {
+    res.send(createNewThreadPage);
+});
+
+router.get("/thread/:threadId", (req, res) => {
+    // TODO: KODE SOM GIVER threadId med
+    let threadId = req.params.threadId;
+    module.exports = { threadId };
+    res.send(threadPage);
 });
 
 

@@ -1,6 +1,6 @@
 [x] Implementer UUID til threadsRouter
 [x] CRUD til threadsRouter
-[ ] Slet Mongoose fra depencies
+[x] Slet Mongoose fra depencies
 [ ] 
 [ ]     
 [x] lav login function i msgboard.js
@@ -14,7 +14,14 @@
 [ ] 
 [ ] Sikre at flere brugere ikke kan have samme brugernavn og email
 [ ] 
+[ ] Lave admin side og serve den. Lav login specielt til den...
+    - Indhold:
+        - Liste over alle brugere. Mulighed for at køre CRUD på dem
 [ ] 
 [ ] 
 [ ] 
-[ ] 
+
+
+TODO's i koden
+[ ] pagesRouter 
+[ ] threadpage.js 
