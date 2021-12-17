@@ -12,23 +12,23 @@ router.post("/msgboard/login", async (req, res) => {
 
     const filter = { "username" : req.body.username} ;
     
-    
-
     const user = await collection.findOne(filter);
+
+
 
     if (user != null){
         bcrypt.compare(req.body.password, user.password, function(err, result) {
             if (result) {
-                req.session.loggedIn = true; 
-                res.sendStatus(200);
+                req.session.user = user;
+                console.log(user) 
+                //res.sendStatus(200);
+                res.status(200).json(user);
             } else {
-                res.sendStatus(400);
+                //401 Unauthorized
+                res.sendStatus(401);
             }
         });  
     }      
 });
-
-
-
 
 export default router;

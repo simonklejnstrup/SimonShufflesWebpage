@@ -15,14 +15,9 @@ router.get('/api/threads/:threadId', async (req, res) => {
 
     const filter = { "threadId" : req.params.threadId} ;
 
-    const options = {
-        // Exclude _id from the returned document
-        projection: { _id: 0, msg: 1, threadId: 1 },
-      };
-
     await connectDB()
 
-    const thread = await collection.findOne(filter, options);
+    const thread = await collection.findOne(filter);
 
     if (thread === null){
         // 404 Not found

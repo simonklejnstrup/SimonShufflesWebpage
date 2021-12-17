@@ -43,24 +43,7 @@ function deleteThread(threadId) {
     })
 }
 
-function login() {
-    fetch("/msgboard/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({
-            username: document.getElementById('username').value,
-            password: document.getElementById('password').value
-        })
-    }).then(res => {
-        if (res.ok) {
-            toastr.success('Logging in...')
-               setTimeout(() => location.href= '/signup', 1500); // TODO: Ret destination til
-        }
-        else {
-            toastr.info("Couldn't login - Check password and try again.'")
-        }
-    }) 
-}
+
 
 
 
@@ -70,11 +53,7 @@ document.getElementById('new-thread').addEventListener('click', () => {
     location.href= '/createnewthread';
 });
 
-document.getElementById('sign-up').addEventListener('click', () => {
-    location.href= '/signup';
-});
 
-document.getElementById('login').addEventListener('click', login);
 
 
 

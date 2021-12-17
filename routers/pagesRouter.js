@@ -2,6 +2,10 @@ import express from "express";
 const router = express.Router();
 import { createPage } from '../util/render.js'
 
+
+let threadId = '';
+
+
 /* Ready the pages */
 /* Ready the pages */
 /* Ready the pages */
@@ -55,10 +59,9 @@ router.get("/createnewthread", (req, res) => {
     res.send(createNewThreadPage);
 });
 
-router.get("/thread/:threadId", (req, res) => {
-    // TODO: KODE SOM GIVER threadId med
-    let threadId = req.params.threadId;
-    module.exports = { threadId };
+router.get("/thread/:threadId", async (req, res) => {
+
+    threadId = req.params.threadId;
     res.send(threadPage);
 });
 

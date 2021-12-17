@@ -1,14 +1,14 @@
 
-import express from "express";
+import express from 'express';
 const app = express();
-import session from "express-session";
+import session from 'express-session';
 
 
-app.use(express.static("public"));
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-    secret: "shhhhhhhhh",
+    secret: 'shhhhhhhhh',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
