@@ -39,9 +39,9 @@ const threadPage = createPage("threadpage/threadpage.html", {
 /* Serve endpoints */
 /* Serve endpoints */
 
-// router.get("/", (req, res) => {
-//     res.send(frontpagePage);
-// });
+router.get("/", (req, res) => {
+    res.send(frontpagePage);
+});
 
 router.get("/msgboard", (req, res) => {
     res.send(msgboardPage);

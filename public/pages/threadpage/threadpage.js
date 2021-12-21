@@ -5,13 +5,12 @@ function fetchThread() {
     fetch(`/api/threads/${threadId}`) // TODO: FIX
     .then((res) => {
         if (!res.ok) {
-            throw Error("Could not fetch thread from API");
+            throw Error('Could not fetch thread from API');
         } else {
             return res.json();
         }
     })
     .then(thread => { 
-        console.log(thread);
         document
         .querySelector('#thread-wrapper')
         .insertAdjacentHTML('afterbegin', 

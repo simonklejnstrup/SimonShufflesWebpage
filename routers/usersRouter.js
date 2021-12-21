@@ -2,6 +2,7 @@ import express from 'express';
 import { connectDB, db } from '../database/connectDB.js';
 import { v4 as uuidv4 } from 'uuid';
 import { encrypt } from '../util/encryption.js';
+import validator from 'validator';
 
 const router = express.Router();
 const collection = db.collection('users');
@@ -14,7 +15,7 @@ router.get('/api/users', async (req, res) => {
 
 router.get('/api/users/:userId', async (req, res) => {
 
-    const filter = { "userId" : req.params.userId} ;
+    const filter = { "userId" : req.params.userId};
 
     const options = {
         // Exclude _id from the returned document
@@ -34,8 +35,20 @@ router.get('/api/users/:userId', async (req, res) => {
 });
 
 
-
 router.post('/api/users', async (req, res) => {
+    if ( validator.isEmpty(req.body.username, { ignore_whitespace: true }) 
+        || validator.isEmpty(req.body.email, { ignore_whitespace: true }) 
+        || validator.isEmpty(req.body.password, { ignore_whitespace: true })
+        ){
+        //400 Bad request
+        res.sendStatus(400);
+        return
+    }
+    else if (!validator.isEmail(req.body.email)){
+        //422 (Unprocessable Entity)
+        res.sendStatus(422);
+        return
+    }
     const newUser = {};
     newUser.username = req.body.username;
     newUser.email = req.body.email;
@@ -51,13 +64,35 @@ router.post('/api/users', async (req, res) => {
 
     await collection.insertOne(newUser, function(err){
         if (err) {
-            // 500 Internal Server Error
-            res.sendStatus(500);
+            if (err.code === 11000){
+                //409 Conflict
+                res.sendStatus(409)
+                } else {
+                // 500 Internal Server Error
+                res.sendStatus(500)
+                }
         } else {
             // 201 Created
             res.sendStatus(201);
         }
     });
+});
+
+router.delete('/api/users/:userId', async (req, res) => {
+
+    const filter = { "userId" : req.params.userId};
+
+    await connectDB;
+
+    const user = await collection.findOneAndDelete(filter);
+
+    if (user === null){
+        // 404 Not found
+        res.sendStatus(404);
+    } else {
+        res.send(user);
+    } 
+
 });
 
 

@@ -9,14 +9,21 @@
     Husk at man skal kunne forklare hvad det er
 [ ]
 [x] Få toastr til at virke
-[ ] Implementer session
-[ ] find en god location at sende brugere hen hvis de er succesfulde med at logge in (msgboard.js, linje 79)
+[x] Implementer session
+[x] find en god location at sende brugere hen hvis de er succesfulde med at logge in (msgboard.js, linje 79)
 [ ] 
 [ ] Sikre at flere brugere ikke kan have samme brugernavn og email
-[ ] 
+[ ] Sikre at email er formatteret som en ægte email
+
 [ ] Lave admin side og serve den. Lav login specielt til den...
     - Indhold:
         - Liste over alle brugere. Mulighed for at køre CRUD på dem
+[ ] 
+[ ] Implementer bekræftelsesemails når nye brugere signer up
+[ ] 
+[ ] usersRouter
+[ ]  - delete route
+[ ]  - put route
 [ ] 
 [ ] 
 [ ] 

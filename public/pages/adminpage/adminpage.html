@@ -1,8 +1,24 @@
 <h1>Admin Page</h1>
 
 
+<button type="button" value="Show All Users"  id="show-all-users-btn"></button>
 
-<div id="users-wrapper"></div>
+<div id="all-users-div" class="card table-responsive" hidden>
+<h2>All Users</h2>
+<table id="users-wrapper" class="table">
+    <thead>
+    <tr>
+      <th scope="col">Delete</th>
+      <th scope="col">Update</th>
+      <th scope="col">Username</th>
+      <th scope="col">E-mail</th>
+      <th scope="col">User Id</th>
+    </tr>
+    </thead>    
+  </table>
+</div>
+
+
 
 
 <script src="../pages/adminpage/adminpage.js"></script>
