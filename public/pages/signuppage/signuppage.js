@@ -1,7 +1,7 @@
 function createUser() {
+
     const password = document.getElementById('pass').value; 
     const rePassword = document.getElementById('re-pass').value;
-
 
     if (password !== rePassword) {
         toastr.error('Please make sure passwords match')
@@ -17,7 +17,6 @@ function createUser() {
             })  
         })
         .then (res => {
-            console.log(res.status)
             switch (res.status){
                 case 201:
                     toastr.success('User created successfully')

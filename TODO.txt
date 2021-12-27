@@ -25,10 +25,12 @@
 [ ]  - delete route
 [ ]  - put route
 [ ] 
-[ ] 
+[ ] Nægt adgang til adminpage hvis bruger ikke har en session med brugernavnet 'admin'
 [ ] 
 
 
 TODO's i koden
 [ ] pagesRouter 
 [ ] threadpage.js 
+[ ] adminpage.js
+[ ] createnewthread.js

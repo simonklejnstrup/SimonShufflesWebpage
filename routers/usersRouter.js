@@ -80,7 +80,7 @@ router.post('/api/users', async (req, res) => {
 
 router.delete('/api/users/:userId', async (req, res) => {
 
-    const filter = { "userId" : req.params.userId};
+    const filter = { "userId" : req.params.userId };
 
     await connectDB;
 
@@ -94,6 +94,24 @@ router.delete('/api/users/:userId', async (req, res) => {
     } 
 
 });
+
+router.put('api/users/:userId', async (req, res) => {
+
+    const filter = { "userId" : req.params.userID } ;
+
+    const action = { $set: { "username" : req.params.username, "email" : req.params.email } }
+
+    await connectDB;
+
+    const user = await collection.updateOne(`${filter}, ${action}`);
+
+    if (user === null){
+        // 404 Not found
+        res.sendStatus(404);
+    } else {
+        res.send(user);
+    } 
+})
 
 
 export default router;

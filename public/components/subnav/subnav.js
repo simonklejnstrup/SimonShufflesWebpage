@@ -8,7 +8,6 @@ fetch('/hasSession', {
     method: "GET"
 })
 .then(res => {
-
     if (res.ok) {
         loggedInDiv.hidden = false;
         loggedOutDiv.hidden= true;
@@ -32,8 +31,6 @@ fetch('/hasSession', {
 
 function login() {
     document.querySelector('#welcome-msg').insertAdjacentHTML('afterbegin', '<h5></h5>')
-    console.log('Username: ', document.getElementById('username').value);
-    console.log('Password: ', document.getElementById('password').value);
     fetch("/login", {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
