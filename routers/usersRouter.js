@@ -95,23 +95,23 @@ router.delete('/api/users/:userId', async (req, res) => {
 
 });
 
-router.put('api/users/:userId', async (req, res) => {
-
-    const filter = { "userId" : req.params.userID } ;
-
-    const action = { $set: { "username" : req.params.username, "email" : req.params.email } }
+router.patch('/api/users/:userId', async (req, res) => {
 
     await connectDB;
 
-    const user = await collection.updateOne(`${filter}, ${action}`);
+    const filter =  { "userId" : req.params.userId };
 
-    if (user === null){
-        // 404 Not found
-        res.sendStatus(404);
-    } else {
-        res.send(user);
-    } 
+    const update =  { $set: { "username" : req.body.username || '* No username *',
+                             "email" : req.body.email || '* No email *' 
+                            } 
+                    } 
+
+    const dbResponse = await collection.findOneAndUpdate(filter , update, { returnDocument: 'after' });
+
+    res.send(dbResponse);
 })
+
+
 
 
 export default router;

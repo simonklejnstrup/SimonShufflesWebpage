@@ -1,6 +1,6 @@
-/**************************************************************************************************
+/***************************************************************************************************
 ---------GLOBAL VARIABLES---------GLOBAL VARIABLES---------GLOBAL VARIABLES---------GLOBAL VARIABLES
-**************************************************************************************************/
+***************************************************************************************************/
 
 const allUsersDiv = document.getElementById('all-users-div');
 const showAllUsersBtn = document.getElementById('show-all-users-btn')
@@ -40,27 +40,29 @@ function toggleShowAllUsersBtnText(){
     }
 }
 
-function toggleUserNameAndEmailDisplay(row, user){
+// function toggleUserNameAndEmailDisplay(row, user){
 
-    const update_DoneBtn = document.getElementById('update_done-btn'); 
+//     console.log(row.cells[1].innerHTML === '<button id="update_done-btn">Done</button>')
 
-    if (update_DoneBtn.innerHTML === 'Done') {       
-    row.cells[2].innerHTML = `<input id="new-username" type="text" value="${escapeHTML(user.username)}"></input>`;
-    row.cells[3].innerHTML = `<input id="new-email" type="text" value="${escapeHTML(user.email)}"></input>`;
+//     if (row.cells[1].innerHTML === `<button id="update_done-btn">Update</button>`) {     
+//         console.log('linje 46 (ToggleUsernameAndEmail');
+
+//         row.cells[2].innerHTML = `<input id="new-username" type="text" value="${escapeHTML(user.username)}"></input>`;
+//         row.cells[3].innerHTML = `<input id="new-email" type="text" value="${escapeHTML(user.email)}"></input>`;
+//     } 
+//     else {
+//         console.log('linje 50 (ToggleUsernameAndEmail');
+//         row.cells[2].innerHTML = `<p>${escapeHTML(user.username)}</p>`;
+//         row.cells[3].innerHTML = `<p>${escapeHTML(user.email)}</p>`;
+//     }
+// }
+
+function toggleUpdate_DoneBtn(row){
+
+    if (row.cells[1].innerHTML === `<button id="update_done-btn">Update</button>`) {
+        row.cells[1].innerHTML = `<button id="update_done-btn">Done</button>`;
     } else {
-        row.cells[2].innerHTML = `<p>${escapeHTML(user.username)}</p>`;
-        row.cells[3].innerHTML = `<p>${escapeHTML(user.email)}</p>`;
-    }
-}
-
-function toggleUpdate_DoneBtn(){
-
-    const update_DoneBtn = document.getElementById('update_done-btn'); 
-    
-    if (update_DoneBtn.innerHTML === 'Done' || update_DoneBtn.innerHTML === 'undefined') { 
-        update_DoneBtn.innerHTML = 'Update';
-    } else {
-        update_DoneBtn.innerHTML = 'Done';
+        row.cells[1].innerHTML = `<button id="update_done-btn">Update</button>`;
     }
 }
 
@@ -73,9 +75,7 @@ function showAllUsers() {
     const usersTable = document.getElementById('users-wrapper'); 
     usersTable.innerHTML = '';
 
-    fetch('/api/users', {
-        method: 'GET'
-    })
+    fetch('/api/users')
     .then(res => {
         if (!res.ok){
             throw Error('Could not fetch users from API');
@@ -89,8 +89,8 @@ function showAllUsers() {
 
             let row = usersTable.insertRow();
 
-            row.insertCell().innerHTML = `<button type="button">Delete</button>`;
-            row.insertCell().innerHTML = `<button id="update_done-btn">Update</button>`;
+            row.insertCell().innerHTML = '<button type="button">Delete</button>';
+            row.insertCell().innerHTML = '<button id="update_done-btn">Update</button>';
             row.insertCell().innerHTML = `<p>${escapeHTML(user.username)}</p>`;
             row.insertCell().innerHTML = `<p>${escapeHTML(user.email)}</p>`;
             row.insertCell().innerHTML = `<p>${escapeHTML(user.userId)}</p>`;
@@ -103,74 +103,80 @@ function showAllUsers() {
 
             row.cells[1].onclick = () => {
 
-                const update_DoneBtn = document.getElementById('update_done-btn'); 
-
-                toggleUpdate_DoneBtn();
-
-                toggleUserNameAndEmailDisplay(row, user);
-
                 
-                if (update_DoneBtn.innerHTML === 'Update') {
-
-                    //TODO:
-                    const newUsername = document.getElementById('new-username').value; // TypeError: document.getElementById(...) is null
-                    const newEmail = document.getElementById('new-email').value; // TypeError: document.getElementById(...) is null
-
-                    updateUser(user.userId, newUsername, newEmail);
+                if (row.cells[1].innerHTML === `<button id="update_done-btn">Update</button>`) {
+                    row.cells[2].innerHTML = `<input id="new-username" type="text" value="${escapeHTML(user.username)}"></input>`;
+                    row.cells[3].innerHTML = `<input id="new-email" type="text" value="${escapeHTML(user.email)}"></input>`;
                 }
+                
+                if (row.cells[1].innerHTML === `<button id="update_done-btn">Done</button>`) {
+                    updateUser(user.userId)
+                    .then(updatedUser => {
+                        row.cells[2].innerHTML = `<p>${escapeHTML(updatedUser.value.username)}</p>`;
+                        row.cells[3].innerHTML = `<p>${escapeHTML(updatedUser.value.email)}</p>`;
+
+                    });
+                } 
+                
+                toggleUpdate_DoneBtn(row);
             }
         })
     })
     .catch(error => {
         toastr.error('Something went wrong');
+        console.log(error);
     });
 }
 
-      //--------------------\\
-     //-----Fetch Calls------\\
-    //------------------------\\
+          //--------------------\\
+         //-----CRUD  Calls------\\
+        //------------------------\\
 
 
 
-function updateUser(userId, newUsername, newEmail) {
-    console.log('linje 135');
-    fetch(`api/users/${userId}`, {
-        method: 'PUT',
-        headers: { 'Content-type': 'application/json; charset=UTF-8' },
+async function updateUser(userId) {
+
+    const updatedUser = await fetch(`api/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         body: JSON.stringify({
-            username: escapeHTML(newUsername), 
-            email: escapeHTML(newEmail)
+            username: escapeHTML(document.getElementById('new-username').value), 
+            email: escapeHTML(document.getElementById('new-email').value)
         })
     })
     .then(res => {
-        if (res.ok) {
-            toastr.success('User updated');
-            toggleUserNameAndEmailDisplay();
-        } else {
-            toastr.error('Could not update user');
-        }
+        return res.json();
+    })
+    .then(dbResponse => {
+        dbResponse.updatedExisting ? toastr.error('Could not update user') : toastr.success('User updated');
+        return dbResponse;
     })
     .catch(error => {
         console.log(error);
     })
+    return updatedUser
 };
 
 function deleteUserAndRow(userId, indexOfRowToDelete) {
+
     fetch(`/api/users/${userId}`, {
         method: 'DELETE'
     })
     .then(res => {
         if (res.ok) {
-            res.json();
-            const tableRows = document.getElementsByTagName('tr');
-            const rowToDelete = Array
-                                    .from(tableRows)
-                                    .find(row => row.rowIndex === indexOfRowToDelete);
-            rowToDelete.remove();
-            toastr.success(`User: ${res.username} deleted successfully.`)
+            return res.json();
         } else {
             toastr.error('Unable to delete user')
-        }
+        } 
+    })
+    .then(res => {
+        console.log(res)
+        const tableRows = document.getElementsByTagName('tr');
+        const rowToDelete = Array
+                                .from(tableRows)
+                                .find(row => row.rowIndex === indexOfRowToDelete);
+        rowToDelete.remove();
+        toastr.success(`User: ${res.value.username} deleted successfully.`)
     })
     .catch(error => {
         toastr.error('Something went wrong');

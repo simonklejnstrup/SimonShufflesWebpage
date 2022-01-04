@@ -7,7 +7,7 @@ function validateUser() {
         if (res.ok) {
             return res.json();
         } else {
-            return false;
+            return null;
         }
     })
     .then(user => {

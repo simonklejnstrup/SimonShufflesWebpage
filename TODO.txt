@@ -15,7 +15,7 @@
 [ ] Sikre at flere brugere ikke kan have samme brugernavn og email
 [ ] Sikre at email er formatteret som en ægte email
 
-[ ] Lave admin side og serve den. Lav login specielt til den...
+[x] Lave admin side og serve den. Lav login specielt til den...
     - Indhold:
         - Liste over alle brugere. Mulighed for at køre CRUD på dem
 [ ] 
@@ -27,6 +27,9 @@
 [ ] 
 [ ] Nægt adgang til adminpage hvis bruger ikke har en session med brugernavnet 'admin'
 [ ] 
+[ ] Lave overskrifter når man trykker på show all users-knappen på adminpage
+[ ]
+[ ] Send moget ordentligt tilbage fra /hasSession
 
 
 TODO's i koden
