@@ -3,11 +3,12 @@ const router = express.Router();
 
 import bcrypt from "bcrypt";
 import { connectDB, db } from '../database/connectDB.js';
+import { isAuthorized, isAdmin, getUserFromSession } from '../util/authentication.js' 
 
 
 const collection = db.collection('users');
 
-router.post("/login", async (req, res) => {
+router.post("/auth/login", async (req, res) => {
 
     await connectDB()
 
@@ -15,16 +16,16 @@ router.post("/login", async (req, res) => {
     
     const user = await collection.findOne(filter);
 
-    //console.log(`User: ${user}, ReqBodyPass: ${req.body.password}`);
-
     if (user === null){
         res.sendStatus(404);
     } else {
         bcrypt.compare(req.body.password, user.password, function(err, result) {
             if (result) {
-                req.session.user = user;
-                //res.sendStatus(200);
-                res.status(200).json(user);
+                req.session.isAdmin = user.isAdmin;
+                req.session.username = user.username;
+                req.session.userId = user.userId;
+                req.session.isLoggedIn = true;
+                res.sendStatus(200);
             } else {
                 //401 Unauthorized
                 res.sendStatus(401);
@@ -40,12 +41,20 @@ router.get("/logout", (req, res) => {
     res.redirect("/msgboard")
 })
 
-router.get("/hasSession", (req, res) => {
-    if (req.session.user){
-        res.status(200).json(req.session.user)
-    } else {
-        res.sendStatus(404);
-    }
+router.get("/auth/username", (req, res) => {
+    req.session.username ? res.send({ username: req.session.username }) : res.sendStatus(404); 
 })
+
+router.get("/auth/userId", (req, res) => {
+    req.session.userId ? res.send({ userId: req.session.userId }) : res.send({ userId: null });
+    
+})
+
+router.get("/auth/isAdmin", (req, res) => {
+    res.send({ isAdmin: req.session.isAdmin});
+})
+
+
+
 
 export default router;

@@ -12,8 +12,8 @@
 [x] Implementer session
 [x] find en god location at sende brugere hen hvis de er succesfulde med at logge in (msgboard.js, linje 79)
 [ ] 
-[ ] Sikre at flere brugere ikke kan have samme brugernavn og email
-[ ] Sikre at email er formatteret som en ægte email
+[x] Sikre at flere brugere ikke kan have samme brugernavn og email
+[x] Sikre at email er formatteret som en ægte email
 
 [x] Lave admin side og serve den. Lav login specielt til den...
     - Indhold:
@@ -22,15 +22,26 @@
 [ ] Implementer bekræftelsesemails når nye brugere signer up
 [ ] 
 [ ] usersRouter
-[ ]  - delete route
-[ ]  - put route
+[x]  - delete route
+[x]  - put route
 [ ] 
 [ ] Nægt adgang til adminpage hvis bruger ikke har en session med brugernavnet 'admin'
 [ ] 
 [ ] Lave overskrifter når man trykker på show all users-knappen på adminpage
 [ ]
-[ ] Send moget ordentligt tilbage fra /hasSession
-
+[x] Send moget ordentligt tilbage fra /hasSession
+[ ]
+[ ] Implementer isAuthorized ligesom Thomas og Rasmus har gjort
+[ ] 
+[ ] Grundigt kig på createnewthreadpage.js
+[ ]
+[ ] Lave info på msgboard: Postcount på hver tråd
+[ ] - Lave info om antal visninger på hver tråd 
+[ ] - Lave info om seneste svar i tråden, for hver tråd
+[ ] - Join Date visninf for hjer medlem
+[ ] - "#11" nummerering af hver post i en tråd
+[ ]
+[ ] Lave knapper til at komme tilbage til msgboard når man er i en tråd
 
 TODO's i koden
 [ ] pagesRouter 

@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { createPage } from '../util/render.js'
+import { createPageWithoutSubnav, createPageWithSubnav } from '../util/render.js'
 
 
 let threadId = '';
@@ -10,28 +10,30 @@ let threadId = '';
 /* Ready the pages */
 /* Ready the pages */
 
-const frontpagePage = createPage("frontpage/frontpage.html", { 
-    title: "Simon Shuffles | Welcome"
+const frontpagePage = createPageWithoutSubnav("frontpage/frontpage.html", { 
+    title: 'Simon Shuffles | Welcome'
 });
 
-const msgboardPage = createPage("msgboard/msgboard.html", { 
-    title: "Simon Shuffles | Messageboard"
+const msgboardPage = createPageWithSubnav("msgboard/msgboard.html", { 
+    title: 'Simon Shuffles | Messageboard'
+    
 });
 
-const signupPage = createPage("signuppage/signuppage.html", { 
+const signupPage = createPageWithSubnav("signuppage/signuppage.html", { 
     title: "Simon Shuffles | Sign Up"
 });
 
-const adminPage = createPage("adminpage/adminpage.html", { 
-    title: "Simon Shuffles | Admin"
+const adminPage = createPageWithSubnav("adminpage/adminpage.html", { 
+    title: 'Simon Shuffles | Admin'
 });
 
-const createNewThreadPage = createPage("createnewthreadpage/createnewthreadpage.html", { 
-    title: "Simon Shuffles | Create New Thread"
+const createNewThreadPage = createPageWithSubnav("createnewthreadpage/createnewthreadpage.html", { 
+    title: 'Simon Shuffles | Create New Thread'
 });
 
-const threadPage = createPage("threadpage/threadpage.html", { 
-    title: "Simon Shuffles | Thread"
+const threadPage = createPageWithSubnav("threadpage/threadpage.html", { 
+    title: 'Simon Shuffles | Thread',
+    cssTag: '<link rel="stylesheet" href="../../pages/threadpage/threadpage.css">'
 });
 
 
@@ -59,9 +61,9 @@ router.get("/createnewthread", (req, res) => {
     res.send(createNewThreadPage);
 });
 
-router.get("/thread/:threadId", async (req, res) => {
+router.get("/msgboard/thread/:threadId", async (req, res) => {
 
-    threadId = req.params.threadId;
+    //threadId = req.params.threadId;
     res.send(threadPage);
 });
 

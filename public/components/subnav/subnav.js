@@ -3,35 +3,42 @@ const loggedInDiv = document.getElementById('logged-in');
 const loggedOutDiv = document.getElementById('logged-out');
 const adminBtn = document.getElementById('admin-btn');
 
-
-fetch('/hasSession', {
-    method: "GET"
-})
+fetch('/auth/username')
 .then(res => {
-    if (res.ok) {
-        loggedInDiv.hidden = false;
-        loggedOutDiv.hidden= true;
-        res.json()
-            .then(user => {
-                document
-                .querySelector('#welcome-msg')
-                .insertAdjacentHTML('afterbegin',
-                `<h5>Welcome ${user.username}</h5>`);
-                if (user.username === 'admin'){
-                    adminBtn.hidden = false;
-                }
-            })
-    } else {
+    if (!res.ok) {
         loggedInDiv.hidden = true;
         loggedOutDiv.hidden = false;
         adminBtn.hidden = true;
-
+    } else {
+        loggedInDiv.hidden = false;
+        loggedOutDiv.hidden = true;
+        return res.json()
+    }
+})
+.then(user => {
+    if (!user) {
+        return
+    } else {
+        document
+        .querySelector('#welcome-msg')
+        .insertAdjacentHTML('afterbegin',
+        `<h5>Welcome ${user.username}</h5>`);
     }
 })
 
+
+fetch('/auth/isAdmin')
+.then(res => {
+    return res.json()
+})
+.then(user => {
+    user.isAdmin ? adminBtn.hidden = false : adminBtn.hidden = true
+})
+
+
 function login() {
     document.querySelector('#welcome-msg').insertAdjacentHTML('afterbegin', '<h5></h5>')
-    fetch("/login", {
+    fetch("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({
@@ -39,36 +46,16 @@ function login() {
             password: document.getElementById('password').value
         })
     })
-    .then(res =>  {
+    .then(res =>  { 
         if (!res.ok) {
             toastr.error('Could not login - Check password and try again');
         }
         else {
-            res.json()
-            .then(user => {
-                document
-                .querySelector('#welcome-msg')
-                .insertAdjacentHTML('afterbegin',
-                `<h5>Welcome ${user.username}</h5>`);
-            })
             toastr.success('Logging in...');
             setTimeout(() => location.href= '/msgboard', 1500);
         }
     }) 
 }
-
-function toggleLoginDiv(){
-    if (loggedIn.style.display === 'block'){
-        loggedIn.style.display = 'none'
-        loggedOut.style.display = 'block'
-    } else {
-        loggedIn.style.display = 'block'
-        loggedOut.style.display = 'none'
-
-    }
-}
-
-
 
 
 document.getElementById('sign-up-btn').addEventListener('click', () => {
@@ -79,9 +66,9 @@ document.getElementById('login-btn').addEventListener('click', login);
 
 document.getElementById('logout-btn').addEventListener('click', () => {
     location.href = '/logout';
-})
+});
 
 document.getElementById('admin-btn').addEventListener('click', () => {
     location.href = '/admin';
-})
+});
 

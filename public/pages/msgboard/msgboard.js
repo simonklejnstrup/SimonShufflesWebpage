@@ -2,19 +2,22 @@ function fetchThreads() {
     fetch('/api/threads')
     .then((res) => {
         if (!res.ok) {
-            throw Error("Could not fetch threads from API");
+            toastr.error('Could not fetch threads from API');
+            setTimeout(() => location.href= '/msgboard', 1500);
         } else {
             return res.json();
         }
     })
     .then(threads => { 
-        threads.map(thread => {
+        threads.map(thread => { 
             document
             .querySelector('#threads-wrapper')
             .insertAdjacentHTML('afterbegin', 
             `<div class="thread">
                 <button onclick="deleteThread('${escapeHTML(thread.threadId)}')" id="delete-thread">Delete</button>
-                <a href="/thread/${escapeHTML(thread.threadId)}">${escapeHTML(thread.title)}</a>
+                <a href="/msgboard/thread/${escapeHTML(thread.threadId)}">${escapeHTML(thread.title)}</a>
+                <p> Author: ${thread.posts[0].username}</p>
+                <p> Postet: ${thread.posts[0].createdAt}</p>
                 </div>`);
         })
     })
@@ -32,12 +35,12 @@ function deleteThread(threadId) {
         method: 'DELETE',
     })
     .then(res => {
-        console.log(res)
         if (!res.ok){
-            throw Error('Could not delete thread');
+            toastr.error('Could not delete thread');
+            setTimeout(() => location.href= '/msgboard', 1500);
         } else {
             //toastr.success("Thread deleted successfully")
-            setTimeout(() => location.href= '/msgboard', 1500);
+            setTimeout(() => location.href= '/msgboard', 500);
 
         }
     })

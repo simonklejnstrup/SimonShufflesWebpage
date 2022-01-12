@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { encrypt } from '../util/encryption.js';
 import validator from 'validator';
 
+
 const router = express.Router();
 const collection = db.collection('users');
 
