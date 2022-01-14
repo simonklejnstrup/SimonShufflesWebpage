@@ -1,9 +1,23 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,500;1,900&display=swap');
+
 
 body {
 
     font-family: 'Rubik', sans-serif !important
+}
+
+.pencil {
+    border-radius: 50%;
+    border-color: black;
+    border: solid 1px;
+    width: 1em;
+}
+
+
+.date {
+    font-style: normal;
+    font-size: smaller;
+    color: darkgray;
 }
 
 .card-no-border .card {
@@ -62,14 +76,21 @@ body {
     background-color: #ef5350
 }
 
+.comment-footer {
+    padding-right: 1em;
+}
+
 .action-icons a {
-    padding-left: 7px;
+
+    margin: 2 8 2 8;
     vertical-align: middle;
     color: #99abb4
 }
 
 .action-icons a:hover {
-    color: #1976d2
+    color: rgba(51, 139, 0, 0.692);
+    box-shadow: 0 0 2px 1px rgba(51, 139, 0, 0.692);
+
 }
 
 .mt-100 {

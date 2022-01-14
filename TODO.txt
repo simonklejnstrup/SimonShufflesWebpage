@@ -43,6 +43,8 @@
 [ ]
 [ ] Lave knapper til at komme tilbage til msgboard når man er i en tråd
 
+[ ] Sorter tråde efter den der senest er blevet postet i
+
 TODO's i koden
 [ ] pagesRouter 
 [ ] threadpage.js 

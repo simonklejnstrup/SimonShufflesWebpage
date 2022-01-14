@@ -15,7 +15,8 @@ const frontpagePage = createPageWithoutSubnav("frontpage/frontpage.html", {
 });
 
 const msgboardPage = createPageWithSubnav("msgboard/msgboard.html", { 
-    title: 'Simon Shuffles | Messageboard'
+    title: 'Simon Shuffles | Messageboard',
+    cssTag: '<link rel="stylesheet" href="../../pages/msgboard/msgboard.css">'
     
 });
 

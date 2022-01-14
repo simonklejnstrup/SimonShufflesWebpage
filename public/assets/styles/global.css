@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,500;1,300;1,900&display=swap');
+
 * {
     /* background-image: url('../rust-texture.jpg'); */
 
@@ -6,4 +8,21 @@
 textarea {
     resize: none;
     outline: none;
+}
+
+input {
+    outline: none;
+}
+
+.date, .author {
+    color: darkgray
+}
+
+.date {
+    font-weight: 200;
+    font-size: 0.7rem;
+}
+
+.author {
+    margin-bottom: 5px;
 }

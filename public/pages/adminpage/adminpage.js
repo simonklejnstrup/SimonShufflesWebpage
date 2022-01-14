@@ -17,7 +17,7 @@ const showAllUsersBtn = document.getElementById('show-all-users-btn')
 
 
       //---------------\\
-     //-----TOGGLERS-----\\
+     //-----TOGGLERS----\\
     //-------------------\\
 
 function toggleAllUsersDiv() {
@@ -40,22 +40,6 @@ function toggleShowAllUsersBtnText(){
     }
 }
 
-// function toggleUserNameAndEmailDisplay(row, user){
-
-//     console.log(row.cells[1].innerHTML === '<button id="update_done-btn">Done</button>')
-
-//     if (row.cells[1].innerHTML === `<button id="update_done-btn">Update</button>`) {     
-//         console.log('linje 46 (ToggleUsernameAndEmail');
-
-//         row.cells[2].innerHTML = `<input id="new-username" type="text" value="${escapeHTML(user.username)}"></input>`;
-//         row.cells[3].innerHTML = `<input id="new-email" type="text" value="${escapeHTML(user.email)}"></input>`;
-//     } 
-//     else {
-//         console.log('linje 50 (ToggleUsernameAndEmail');
-//         row.cells[2].innerHTML = `<p>${escapeHTML(user.username)}</p>`;
-//         row.cells[3].innerHTML = `<p>${escapeHTML(user.email)}</p>`;
-//     }
-// }
 
 function toggleUpdate_DoneBtn(row){
 

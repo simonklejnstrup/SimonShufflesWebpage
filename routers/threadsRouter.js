@@ -9,8 +9,11 @@ const collection = db.collection('threads');
 
 
 router.get('/api/threads', async (req, res) => {
+
     await connectDB()
+
     const threads = await collection.find().toArray();
+
     res.send(threads);
 });
 
@@ -45,7 +48,7 @@ router.post('/api/threads/newpost/:threadId', async (req, res) => {
 
         const update = { $push: { posts: newPost } };
     
-        await collection.updateOne(filter, update, function(err){
+        await collection.updateOne(filter, update, function(err) {
             if (err) {
                 // 500 Internal Server Error
                 res.sendStatus(500);
@@ -69,12 +72,11 @@ router.post('/api/threads', async (req, res) => {
                                 }]
                         
                     }
-    // newThread.threadId = uuidv4();
-    // newThread.createdAt = new Date().toLocaleString();
+    
 
     await connectDB();
 
-    await collection.insertOne(newThread, function(err){
+    await collection.insertOne(newThread, function(err) {
         if (err) {
             // 500 Internal Server Error
             res.sendStatus(500);
@@ -91,7 +93,7 @@ router.delete('/api/threads/:threadId', async (req, res) => {
 
     await connectDB();
 
-    await collection.findOneAndDelete(filter, function(err){
+    await collection.findOneAndDelete(filter, function(err) {
         if (err) {
             // 404 Not found
             res.sendStatus(404);
@@ -102,6 +104,7 @@ router.delete('/api/threads/:threadId', async (req, res) => {
     });
 });
 
+// TODO: Finde ud af hvor denne bliver kaldt fra
 router.put('/api/threads/:threadId', async (req, res) => {
 
     const filter = { "threadId" : req.params.threadId };
@@ -110,7 +113,7 @@ router.put('/api/threads/:threadId', async (req, res) => {
     
     await connectDB();
 
-    await collection.findOneAndUpdate(filter, updateThread, function(err){
+    await collection.findOneAndUpdate(filter, updateThread, function(err) {
         if (err) {
             // 404 Not found
             res.sendStatus(404);
@@ -120,5 +123,33 @@ router.put('/api/threads/:threadId', async (req, res) => {
         }
      });
 });
+
+router.patch('/api/threads/editpost/', async (req, res) => {
+
+    console.log("TCL: req", req)
+    
+    const filter = {};
+
+    const update = { $set: { "posts.$[post].content": req.body.newContent, lastUpdatedAt: new Date().toLocaleString() } }
+    
+    const arrayFilter = { arrayFilters: [  { "post.postId": req.body.postId } ]};
+
+    await connectDB();
+
+    //Updates the document 
+    await collection.findOneAndUpdate(filter, update, arrayFilter, function(err) {
+        if (err) {
+            res.send({isEmpty: true});
+            return;
+        } 
+    })
+    
+    // Finds and returns the specific post that was just updated
+    const updatedPost = await collection.find({"posts.postId" : req.body.postId}, {"posts.$": 1});
+    console.log("TCL: updatedPost", updatedPost)
+
+    res.send(updatedPost);
+    
+})
 
 export default router;

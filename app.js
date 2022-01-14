@@ -3,6 +3,12 @@ import express from 'express';
 const app = express();
 import session from 'express-session';
 
+import http from "http";
+const server = http.createServer(app);
+
+import { Server } from "socket.io";
+const io = new Server(server);
+
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -28,6 +34,11 @@ app.use(usersRouter);
 app.use(loginRouter);
 app.use(adminRouter);
 
+// Socket.io
+io.on('connection', (socket) => {
+    console.log("A user connected: {id: ", socket.id, "}")
+})
+
 
 /* Configure server */
 /* Configure server */
@@ -35,6 +46,6 @@ app.use(adminRouter);
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, (error) => {
+server.listen(PORT, (error) => {
     console.log("Server is running on", PORT);
 });
