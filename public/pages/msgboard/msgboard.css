@@ -1,8 +1,12 @@
-a {
+.card a {
     font-family: Rubik;
     margin: 0 10 5 10;
     text-decoration: none;
     color: rgb(110, 0, 0);
     font-size: x-large;
+}
+
+.new-thread-top {
+    
 }
 

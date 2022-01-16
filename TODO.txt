@@ -45,6 +45,8 @@
 
 [ ] Sorter tråde efter den der senest er blevet postet i
 
+[ ] Lave 'active' markør for nav bar (er allerede lavet i css, skal bare implementeres)
+
 TODO's i koden
 [ ] pagesRouter 
 [ ] threadpage.js 

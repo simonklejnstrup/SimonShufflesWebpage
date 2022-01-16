@@ -1,29 +1,30 @@
 <subnav>
-    <div>
+    <div class="text-end mt-2 sn-cont">
         <div id="logged-in" >
             
             <div id="welcome-msg"></div>
-            <button id="logout-btn">Logout</button>
+            <button class="button" id="logout-btn">Logout</button>
         </div>
 
         <div id="admin-div">
-            <button id="admin-btn">Admin Page</button>
+            <button class="button" id="admin-btn">Admin Page</button>
         </div>
 
         <div id="logged-out"> 
 
-            <label for="username">Username:</label>
-            <input type="text" id="username">
-    
-            <label for="password">Password:</label>
-            <input type="password" id="password">
+
+            <input class="inb" type="text" id="username" placeholder="Username">
+            
+            <span class="spacer"></span>
+
+            <input class="inb" type="password" id="password" placeholder="Password">
     
             
     
-            <button id="login-btn">Log In</button>
+            <button class="button" role="button" id="login-btn">Log In</button>
 
-            <label  for="sign-up-btn">Or:</label>
-            <button id="sign-up-btn">Sign Up</button>
+
+            <button class="button signup-btn" role="button" id="sign-up-btn">Sign Up</button>
     
         </div>
             

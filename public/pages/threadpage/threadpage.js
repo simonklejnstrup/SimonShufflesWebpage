@@ -70,16 +70,24 @@ fetch(`/api/threads/${threadId}`)
             submitButton.id = 'submit';
             submitButton.innerHTML = 'Done';
             submitButton.addEventListener('click', async () => {
-                const editedPost = await editPost(post.postId, editInput.value);
-                if (editPost.isEmpty) {
-                    toastr.error('An error has occured. Unable to update post');
-                    return;
-                } else {
-                    postContentFromDOM.innerHTML = escapeHTML(editedPost);
-                    commentFooter.removeChild(submitButton);
-                    editInputContainer.replaceWith(postContentFromDOM);
+                await editPost(post.postId, editInput.value)
+                        .then(editedPost => {
+                            console.log(editedPost);
+                            if (editedPost.isEmpty) {
+                                toastr.error('An error has occured. Unable to update post');
+                                return;
+                            } else {
+                                postContentFromDOM.innerHTML = escapeHTML(editedPost.content);
+                                commentFooter.removeChild(submitButton);
+                                editInputContainer.replaceWith(postContentFromDOM);
+            
+                            }})
+                        .catch(error => {
+                        console.log("TCL: error", error)
+                        });
 
-                }
+                
+                
             })
 
             
@@ -171,9 +179,13 @@ async function submitNewPost() {
 
 async function editPost(postId, newContent) {
 
+console.log("TCL: editPost -> newContent", newContent) //VIRKER
+
     
-    const updatedPost = await fetch('/api/threads/editpost', {
-        method: 'PUT',
+
+    
+    const threadArray = await fetch('/api/threads/editpost', {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         body: JSON.stringify({
             postId: postId, 
@@ -181,13 +193,20 @@ async function editPost(postId, newContent) {
         })
     })
     .then(res => {
-        console.log(res)
         return res.json();
     })
     .catch(error => {
         console.log(error);
     })
-    return updatedPost;
+
+    const editedPostArray = threadArray[0].posts.map(post => {
+        if (post.postId === postId) {
+            return post
+        }
+    })
+
+    return editedPostArray[0];
+    
 }
 
 document.getElementById('submit-new-post').addEventListener('click', submitNewPost)

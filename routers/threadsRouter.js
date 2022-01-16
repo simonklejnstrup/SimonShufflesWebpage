@@ -125,16 +125,20 @@ router.put('/api/threads/:threadId', async (req, res) => {
 });
 
 router.patch('/api/threads/editpost/', async (req, res) => {
-
-    console.log("TCL: req", req)
     
+    
+    console.log("TCL: req", req.body.newContent)
+
     const filter = {};
 
     const update = { $set: { "posts.$[post].content": req.body.newContent, lastUpdatedAt: new Date().toLocaleString() } }
     
     const arrayFilter = { arrayFilters: [  { "post.postId": req.body.postId } ]};
 
+    db.threads.findOneAndUpdate({}, { $set: { "posts.$[post].content": "AM er en lille EDIT" } }, { returnNewDocument: true, arrayFilters: [  { "post.postId": "bc8e51cd-ef39-481a-b55c-6c89ec4ad80a" } ]})
+
     await connectDB();
+
 
     //Updates the document 
     await collection.findOneAndUpdate(filter, update, arrayFilter, function(err) {
@@ -145,9 +149,11 @@ router.patch('/api/threads/editpost/', async (req, res) => {
     })
     
     // Finds and returns the specific post that was just updated
-    const updatedPost = await collection.find({"posts.postId" : req.body.postId}, {"posts.$": 1});
-    console.log("TCL: updatedPost", updatedPost)
+    const updatedPost = await collection.find({"posts.postId" : req.body.postId}, {"posts.$": 1}).toArray();
 
+
+    // console.log("TCL: updatedPost", JSON.stringify(updatedPost, null, 4))
+    
     res.send(updatedPost);
     
 })

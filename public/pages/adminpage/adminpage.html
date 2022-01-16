@@ -1,23 +1,33 @@
-<h1>Admin Page</h1>
 
+<body class="d-flex flex-column min-vh-100">
 
-<button type="button" value="Show All Users"  id="show-all-users-btn">Show All Users</button>
+  <h2 class="text-center mt-3">Admin Page</h2>
+  <hr>
 
-<div id="all-users-div" class="card table-responsive" hidden>
-<h2>All Users</h2>
-<table id="users-wrapper" class="table">
-    <thead>
-    <tr>
-      <th scope="col">Delete</th>
-      <th scope="col">Update</th>
-      <th scope="col">Username</th>
-      <th scope="col">E-mail</th>
-      <th scope="col">User Id</th>
-    </tr>
-    </thead>    
-  </table>
+<div class="container d-flex justify-content-center mt-3">
+
+  <button class="button" type="button" value="Show All Users"  id="show-all-users-btn">Show All Users</button>
+
+    <div id="all-users-div" class="card table-responsive" hidden>
+    <h2>All Users</h2>
+    <table  class="table">
+        <thead>
+        <tr>
+          <th scope="col">Delete</th>
+          <th scope="col">Update</th>
+          <th scope="col">Username</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">User Id</th>
+        </tr>
+        </thead>
+        <tbody id="users-wrapper">
+  
+        </tbody>
+      </table>
+    </div>
+  
 </div>
-
+</body>
 
 
 
