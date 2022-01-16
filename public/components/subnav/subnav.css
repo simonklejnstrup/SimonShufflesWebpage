@@ -1,10 +1,11 @@
 .sn-cont {
+    text-align: end;
     margin-right: 1em;
 
 }
 
 .inb {
-    width: 8em;
+    width: 10em;
     margin-right: 1em;
     border:none;
     border-bottom: 2px solid #000000;
@@ -20,6 +21,11 @@
 
 .signup-btn {
     margin-left: 0.5em;
+}
+
+#new-thread {
+    margin-left: 5em;
+
 }
 
 

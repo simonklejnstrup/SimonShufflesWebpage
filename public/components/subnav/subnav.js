@@ -12,12 +12,12 @@ fetch('/auth/username')
     } else {
         loggedInDiv.hidden = false;
         loggedOutDiv.hidden = true;
-        return res.json()
+        return res.json();
     }
 })
 .then(user => {
     if (!user) {
-        return
+        return;
     } else {
         document
         .querySelector('#welcome-msg')
@@ -29,10 +29,10 @@ fetch('/auth/username')
 
 fetch('/auth/isAdmin')
 .then(res => {
-    return res.json()
+    return res.json();
 })
 .then(user => {
-    user.isAdmin ? adminBtn.hidden = false : adminBtn.hidden = true
+    user.isAdmin ? adminBtn.hidden = false : adminBtn.hidden = true;
 })
 
 
@@ -54,7 +54,7 @@ function login() {
             toastr.success('Logging in...');
             setTimeout(() => location.href= '/msgboard', 1500);
         }
-    }) 
+    }); 
 }
 
 

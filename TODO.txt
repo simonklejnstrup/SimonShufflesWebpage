@@ -47,6 +47,8 @@
 
 [ ] Lave 'active' markør for nav bar (er allerede lavet i css, skal bare implementeres)
 
+[ ] fix collapsing navbar
+
 TODO's i koden
 [ ] pagesRouter 
 [ ] threadpage.js 

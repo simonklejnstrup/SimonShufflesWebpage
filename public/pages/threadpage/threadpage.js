@@ -70,9 +70,8 @@ fetch(`/api/threads/${threadId}`)
             submitButton.id = 'submit';
             submitButton.innerHTML = 'Done';
             submitButton.addEventListener('click', async () => {
-                await editPost(post.postId, editInput.value)
+                await editPost(thread.threadId, post.postId, editInput.value)
                         .then(editedPost => {
-                            console.log(editedPost);
                             if (editedPost.isEmpty) {
                                 toastr.error('An error has occured. Unable to update post');
                                 return;
@@ -147,13 +146,13 @@ async function submitNewPost() {
     const username = await fetch('/auth/username')
                         .then(res => {
                             if (!res.ok) {
-                                return { username: 'Anonymous' }
+                                return { username: 'Anonymous' };
                             } else {
-                                return res.json() 
+                                return res.json();
                             } 
                         })
                         .then(res => {
-                            return res.username
+                            return res.username;
                         });
 
 
@@ -173,39 +172,38 @@ async function submitNewPost() {
         } else {
             toastr.error('Could not create post')
         }
-    })
+    });
 }
 
 
-async function editPost(postId, newContent) {
-
-console.log("TCL: editPost -> newContent", newContent) //VIRKER
-
-    
-
+async function editPost(threadId, postId, newContent) {
     
     const threadArray = await fetch('/api/threads/editpost', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         body: JSON.stringify({
+            threadId: threadId,
             postId: postId, 
             newContent: newContent
         })
     })
     .then(res => {
-        return res.json();
+        if (!res.ok) {
+            toastr.error('Error. Failed to update post')
+        } else {
+            return res.json();
+        }
     })
     .catch(error => {
         console.log(error);
-    })
+    });
 
-    const editedPostArray = threadArray[0].posts.map(post => {
-        if (post.postId === postId) {
-            return post
-        }
-    })
+    const editedPost = threadArray.posts.find(post => post.postId === postId);
 
-    return editedPostArray[0];
+
+    console.log(editedPost);
+
+    return editedPost;
     
 }
 

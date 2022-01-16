@@ -6,8 +6,6 @@ import validator from 'validator';
 const router = express.Router();
 const collection = db.collection('threads');
 
-
-
 router.get('/api/threads', async (req, res) => {
 
     await connectDB()
@@ -104,57 +102,25 @@ router.delete('/api/threads/:threadId', async (req, res) => {
     });
 });
 
-// TODO: Finde ud af hvor denne bliver kaldt fra
-router.put('/api/threads/:threadId', async (req, res) => {
-
-    const filter = { "threadId" : req.params.threadId };
-
-    const updateThread = { $set: req.body }
-    
-    await connectDB();
-
-    await collection.findOneAndUpdate(filter, updateThread, function(err) {
-        if (err) {
-            // 404 Not found
-            res.sendStatus(404);
-        } else {
-            // 204 No Content
-            res.sendStatus(204);
-        }
-     });
-});
 
 router.patch('/api/threads/editpost/', async (req, res) => {
-    
-    
-    console.log("TCL: req", req.body.newContent)
 
-    const filter = {};
+    const filter = { "threadId" : req.body.threadId };
 
-    const update = { $set: { "posts.$[post].content": req.body.newContent, lastUpdatedAt: new Date().toLocaleString() } }
+    const update = { $set: { "posts.$[post].content": req.body.newContent, "posts.$[post].lastUpdatedAt": new Date().toLocaleString() } }
     
-    const arrayFilter = { arrayFilters: [  { "post.postId": req.body.postId } ]};
-
-    db.threads.findOneAndUpdate({}, { $set: { "posts.$[post].content": "AM er en lille EDIT" } }, { returnNewDocument: true, arrayFilters: [  { "post.postId": "bc8e51cd-ef39-481a-b55c-6c89ec4ad80a" } ]})
+    const arrayFilter = { returnDocument: 'after', arrayFilters: [  { "post.postId": req.body.postId } ]};
 
     await connectDB();
 
-
-    //Updates the document 
-    await collection.findOneAndUpdate(filter, update, arrayFilter, function(err) {
+    //Updates the document, returns entire thread
+    await collection.findOneAndUpdate(filter, update, arrayFilter, function(err, result) {
         if (err) {
-            res.send({isEmpty: true});
-            return;
-        } 
+            res.sendStatus(404);
+        }  else {
+            res.send(result.value);
+        }
     })
-    
-    // Finds and returns the specific post that was just updated
-    const updatedPost = await collection.find({"posts.postId" : req.body.postId}, {"posts.$": 1}).toArray();
-
-
-    // console.log("TCL: updatedPost", JSON.stringify(updatedPost, null, 4))
-    
-    res.send(updatedPost);
     
 })
 

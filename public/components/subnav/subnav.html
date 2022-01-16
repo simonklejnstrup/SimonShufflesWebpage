@@ -1,36 +1,22 @@
-<subnav>
-    <div class="text-end mt-2 sn-cont">
-        <div id="logged-in" >
-            
+<subnav class="d-flex">
+    <div class=" mt-2 justify-content-around">
+        <button class="button" id="new-thread">New Thread</button>
+    </div>
+    <div class="mt-2 sn-cont w-75">
+        <div id="logged-in" > 
             <div id="welcome-msg"></div>
             <button class="button" id="logout-btn">Logout</button>
         </div>
-
         <div id="admin-div">
-            <button class="button" id="admin-btn">Admin Page</button>
+            <button class="button mt-2 mb-3" id="admin-btn">Admin Page</button>
         </div>
-
         <div id="logged-out"> 
-
-
             <input class="inb" type="text" id="username" placeholder="Username">
-            
-            <span class="spacer"></span>
-
             <input class="inb" type="password" id="password" placeholder="Password">
-    
-            
-    
-            <button class="button" role="button" id="login-btn">Log In</button>
-
-
-            <button class="button signup-btn" role="button" id="sign-up-btn">Sign Up</button>
-    
-        </div>
-            
+            <button class="button mb-3" role="button" id="login-btn">Log In</button>
+            <button class="button signup-btn mb-3" role="button" id="sign-up-btn">Sign Up</button>
+        </div>      
     </div> 
-
-
 </subnav>
 
 <script src="/components/subnav/subnav.js"></script>

@@ -21,7 +21,8 @@ const msgboardPage = createPageWithSubnav("msgboard/msgboard.html", {
 });
 
 const signupPage = createPageWithSubnav("signuppage/signuppage.html", { 
-    title: "Simon Shuffles | Sign Up"
+    title: "Simon Shuffles | Sign Up",
+    cssTag: '<link rel="stylesheet" href="../../pages/signuppage/signuppage.css">'
 });
 
 const adminPage = createPageWithSubnav("adminpage/adminpage.html", { 
