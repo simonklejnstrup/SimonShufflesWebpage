@@ -45,14 +45,16 @@ router.post('/api/threads/newpost/:threadId', async (req, res) => {
         const filter = { threadId: req.params.threadId };
 
         const update = { $push: { posts: newPost } };
+
+        const returnOptions = { returnDocument: 'after' };
     
-        await collection.updateOne(filter, update, function(err) {
+        await collection.findOneAndUpdate(filter, update, returnOptions, function(err, result) {
             if (err) {
                 // 500 Internal Server Error
                 res.sendStatus(500);
             } else {
                 // 201 Created
-                res.sendStatus(201);
+                res.status(201).json(result);
             }
         });
     }

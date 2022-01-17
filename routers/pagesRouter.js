@@ -1,4 +1,5 @@
 import express from "express";
+import { isAdmin } from "../util/authentication.js";
 const router = express.Router();
 import { createPageWithoutSubnav, createPageWithSubnav } from '../util/render.js'
 
@@ -55,7 +56,7 @@ router.get("/signup", (req, res) => {
     res.send(signupPage);
 });
 
-router.get("/admin", (req, res) => {
+router.get("/admin", isAdmin, (req, res) => {
     res.send(adminPage);
 });
 

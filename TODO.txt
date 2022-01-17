@@ -49,6 +49,8 @@
 
 [ ] fix collapsing navbar
 
+[ ] fix kæmpe knap 'colapse all users' på adminpage
+
 TODO's i koden
 [ ] pagesRouter 
 [ ] threadpage.js 

@@ -1,10 +1,10 @@
 
-export function isAuthorized(req) {
-    !req.session.isLoggedIn ? res.redirect("/login") : next()
+export function isAuthorized(req, res, next) {
+    !req.session.isLoggedIn ? res.redirect("/") : next()
 }
 
-export function isAdmin(req) {
-    return req.session.isAdmin;
+export function isAdmin(req, res, next) {
+    !req.session.isAdmin ? res.redirect("/") : next()
 }
 
 export function getUserFromSession(req) {
