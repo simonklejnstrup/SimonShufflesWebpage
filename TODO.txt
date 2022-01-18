@@ -25,15 +25,15 @@
 [x]  - delete route
 [x]  - put route
 [ ] 
-[ ] Nægt adgang til adminpage hvis bruger ikke har en session med brugernavnet 'admin'
+[x] Nægt adgang til adminpage hvis bruger ikke har en session med brugernavnet 'admin'
 [ ] 
-[ ] Lave overskrifter når man trykker på show all users-knappen på adminpage
+[x] Lave overskrifter når man trykker på show all users-knappen på adminpage
 [ ]
 [x] Send moget ordentligt tilbage fra /hasSession
 [ ]
-[ ] Implementer isAuthorized ligesom Thomas og Rasmus har gjort
+[x] Implementer isAuthorized ligesom Thomas og Rasmus har gjort
 [ ] 
-[ ] Grundigt kig på createnewthreadpage.js
+[x] Grundigt kig på createnewthreadpage.js
 [ ]
 [ ] Lave info på msgboard: Postcount på hver tråd
 [ ] - Lave info om antal visninger på hver tråd 
@@ -41,7 +41,7 @@
 [ ] - Join Date visninf for hjer medlem
 [ ] - "#11" nummerering af hver post i en tråd
 [ ]
-[ ] Lave knapper til at komme tilbage til msgboard når man er i en tråd
+
 
 [ ] Sorter tråde efter den der senest er blevet postet i
 
@@ -49,7 +49,11 @@
 
 [ ] fix collapsing navbar
 
-[ ] fix kæmpe knap 'colapse all users' på adminpage
+[x] fix kæmpe knap 'colapse all users' på adminpage
+
+[ ] Gør så OP kan edit'ere titlen på tråden
+
+[ ] Fix edit comment på alle andre end den første comment i tråden 
 
 TODO's i koden
 [ ] pagesRouter 

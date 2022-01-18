@@ -3,16 +3,14 @@ const router = express.Router();
 
 import bcrypt from "bcrypt";
 import { connectDB, db } from '../database/connectDB.js';
-import { isAuthorized, isAdmin, getUserFromSession } from '../util/authentication.js' 
-
 
 const collection = db.collection('users');
 
-router.post("/auth/login", async (req, res) => {
+router.post('/auth/login', async (req, res) => {
 
     await connectDB()
 
-    const filter = { "username" : req.body.username} ;
+    const filter = { 'username' : req.body.username} ;
     
     const user = await collection.findOne(filter);
 
@@ -36,21 +34,21 @@ router.post("/auth/login", async (req, res) => {
      
 });
 
-router.get("/logout", (req, res) => {
+router.get('/logout', (req, res) => {
     req.session.destroy()
-    res.redirect("/msgboard")
+    res.redirect('/msgboard')
 })
 
-router.get("/auth/username", (req, res) => {
+router.get('/auth/username', (req, res) => {
     req.session.username ? res.send({ username: req.session.username }) : res.sendStatus(404); 
 })
 
-router.get("/auth/userId", (req, res) => {
-    req.session.userId ? res.send({ userId: req.session.userId }) : res.send({ userId: null });
+router.get('/auth/userId', (req, res) => {
+    req.session.userId ? res.send({ userId: req.session.userId }) : res.send({ userId: false });
     
 })
 
-router.get("/auth/isAdmin", (req, res) => {
+router.get('/auth/isAdmin', (req, res) => {
     res.send({ isAdmin: req.session.isAdmin});
 })
 

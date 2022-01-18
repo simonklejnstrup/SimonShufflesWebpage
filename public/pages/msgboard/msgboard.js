@@ -37,21 +37,6 @@ fetchThreads();
 
 
 
-function deleteThread(threadId) {
-    fetch(`/api/threads/${threadId}`, {
-        method: 'DELETE',
-    })
-    .then(res => {
-        if (!res.ok){
-            toastr.error('Could not delete thread');
-            setTimeout(() => location.href= '/msgboard', 1500);
-        } else {
-            //toastr.success("Thread deleted successfully")
-            setTimeout(() => location.href= '/msgboard', 500);
-
-        }
-    })
-}
 
 
 
@@ -59,9 +44,8 @@ function deleteThread(threadId) {
 
 
 
-document.getElementById('new-thread').addEventListener('click', () => {
-    location.href= '/createnewthread';
-});
+
+
 
 
 

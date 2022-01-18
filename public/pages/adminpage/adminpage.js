@@ -43,10 +43,10 @@ function toggleShowAllUsersBtnText(){
 
 function toggleUpdate_DoneBtn(row){
 
-    if (row.cells[1].innerHTML === `<button id="update_done-btn">Update</button>`) {
-        row.cells[1].innerHTML = `<button id="update_done-btn">Done</button>`;
+    if (row.cells[1].innerHTML === '<button class="button" type="button" id="update_done-btn">Update</button>') {
+        row.cells[1].innerHTML = '<button class="button" type="button" id="update_done-btn">Done</button>';
     } else {
-        row.cells[1].innerHTML = `<button id="update_done-btn">Update</button>`;
+        row.cells[1].innerHTML = '<button class="button" type="button" id="update_done-btn">Update</button>';
     }
 }
 
@@ -62,7 +62,7 @@ function showAllUsers() {
     fetch('/api/users')
     .then(res => {
         if (!res.ok){
-            throw Error('Could not fetch users from API');
+            toastr.error('Could not fetch users from API')
         } else {
             return res.json();
         }
@@ -73,48 +73,40 @@ function showAllUsers() {
 
             let row = usersTable.insertRow();
 
-            row.insertCell().innerHTML = '<button type="button">Delete</button>';
-            row.insertCell().innerHTML = '<button id="update_done-btn">Update</button>';
-            row.insertCell().innerHTML = `<p>${escapeHTML(user.username)}</p>`;
-            row.insertCell().innerHTML = `<p>${escapeHTML(user.email)}</p>`;
-            row.insertCell().innerHTML = `<p>${escapeHTML(user.userId)}</p>`;
+            row.insertCell().innerHTML = '<button class="button" type="button">Delete</button>';
+            row.insertCell().innerHTML = '<button class="button" type="button" id="update_done-btn">Update</button>';
+            row.insertCell().innerHTML = `<h5>${escapeHTML(user.username)}</h5>`;
+            row.insertCell().innerHTML = `<h5>${escapeHTML(user.email)}</h5>`;
+            row.insertCell().innerHTML = `<h6>${user.userId}</h6>`;
 
             row.cells[0].onclick = () => {
-
                 deleteUserAndRow(user.userId, row.rowIndex);
-
             }           
 
             row.cells[1].onclick = () => {
-
-                
-                if (row.cells[1].innerHTML === `<button id="update_done-btn">Update</button>`) {
+                if (row.cells[1].innerHTML === '<button class="button" type="button" id="update_done-btn">Update</button>') {
                     row.cells[2].innerHTML = `<input id="new-username" type="text" value="${escapeHTML(user.username)}"></input>`;
                     row.cells[3].innerHTML = `<input id="new-email" type="text" value="${escapeHTML(user.email)}"></input>`;
                 }
-                
-                if (row.cells[1].innerHTML === `<button id="update_done-btn">Done</button>`) {
+                if (row.cells[1].innerHTML === '<button class="button" type="button" id="update_done-btn">Done</button>') {
                     updateUser(user.userId)
                     .then(updatedUser => {
-                        row.cells[2].innerHTML = `<p>${escapeHTML(updatedUser.value.username)}</p>`;
-                        row.cells[3].innerHTML = `<p>${escapeHTML(updatedUser.value.email)}</p>`;
-
+                        row.cells[2].innerHTML = `<h5>${escapeHTML(updatedUser.value.username)}</h5>`;
+                        row.cells[3].innerHTML = `<h5>${escapeHTML(updatedUser.value.email)}</h5>`;
                     });
                 } 
-                
                 toggleUpdate_DoneBtn(row);
             }
         })
     })
     .catch(error => {
-        toastr.error('Something went wrong');
         console.log(error);
     });
 }
 
-          //--------------------\\
-         //-----CRUD  Calls------\\
-        //------------------------\\
+      //--------------------\\
+     //-----CRUD  Calls------\\
+    //------------------------\\
 
 
 

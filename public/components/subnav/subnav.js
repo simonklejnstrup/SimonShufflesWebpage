@@ -22,7 +22,7 @@ fetch('/auth/username')
         document
         .querySelector('#welcome-msg')
         .insertAdjacentHTML('afterbegin',
-        `<h5>Welcome ${user.username}</h5>`);
+        `<h3>Welcome ${user.username}</h3>`);
     }
 })
 
@@ -70,5 +70,9 @@ document.getElementById('logout-btn').addEventListener('click', () => {
 
 document.getElementById('admin-btn').addEventListener('click', () => {
     location.href = '/admin';
+});
+
+document.getElementById('new-thread').addEventListener('click', () => {
+    location.href= '/createnewthread';
 });
 

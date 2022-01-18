@@ -17,7 +17,52 @@ fetch(`/api/threads/${threadId}`)
 })
 .then(thread => { 
     
+    // Insert title
     headerWrapper.insertAdjacentHTML('afterbegin', thread.title);
+
+    // Insert delete-button if user === OP
+    const deleteBtn = document.getElementById('delete-btn');
+    const okBtn = document.getElementById('ok-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const confirmText = document.getElementById('confirm-txt');
+
+    fetch('/auth/username')
+    .then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            return;
+        }
+    })
+    .then(user => {
+        console.log(user)
+        if (!user) {
+            return;
+        } else if (user.username === thread.posts[0].username) {
+            deleteBtn.hidden = false;  
+        }
+    });
+
+    // Add eventlisteners til ok, cancel & delete buttons
+    deleteBtn.addEventListener('click', () => {
+        okBtn.hidden = false;
+        cancelBtn.hidden = false;
+        confirmText.hidden = false;
+    });
+    okBtn.addEventListener('click', () => {
+        deleteThread();
+    });
+    cancelBtn.addEventListener('click', () => {
+        okBtn.hidden = true;
+        cancelBtn.hidden = true;
+        confirmText.hidden = true;
+    });
+
+
+    
+    
+    
+
     
     thread.posts.map(post => {
 
@@ -38,6 +83,21 @@ fetch(`/api/threads/${threadId}`)
 .catch(error => {
     console.log(error); 
 });
+
+function deleteThread() {
+    fetch(`/api/threads/${threadId}`, {
+        method: 'DELETE',
+    })
+    .then(res => {
+        if (!res.ok){
+            toastr.error('Could not delete thread');
+        } else {
+            toastr.success("Thread deleted successfully")
+            setTimeout(() => location.href= '/msgboard', 1500);
+
+        }
+    })
+}
 
 async function submitNewPost() {
 
@@ -73,8 +133,9 @@ async function submitNewPost() {
     .then(dbResponse => {
 
         newPost = dbResponse.value.posts.at(-1);
+        socket.emit('new-post', newPost);
+        document.getElementById('new-post-content').value = '';
 
-        socket.emit('new post', newPost)
     });
 }
 
@@ -104,7 +165,8 @@ async function editPost(threadId, postId, newContent) {
     return editedPost;
 }
 
-socket.on('new post', function(newPost) {
+socket.on('new-post', newPost => {
+    console.log('linje 108', newPost)
     displayNewPost(newPost); 
 });
 
@@ -140,7 +202,9 @@ function displayNewPost(post) {
         pencilImage.src = '../../assets/pencil.png';
         pencilImage.addEventListener('click', () => {
 
-            
+            //Remove pencilImage
+            actionIcons.removeChild(pencilImage);
+
             //Create new textarea for inputting edited message
             const editInput = document.createElement('textarea');
             editInput.name = 'edit-input';
@@ -167,6 +231,7 @@ function displayNewPost(post) {
                             } else {
                                 postContentFromDOM.innerHTML = escapeHTML(editedPost.content);
                                 commentFooter.removeChild(submitButton);
+                                actionIcons.appendChild(pencilImage);
                                 editInputContainer.replaceWith(postContentFromDOM);
                             }})
                         .catch(error => {
@@ -190,7 +255,24 @@ function displayNewPost(post) {
 
         // APPEND
 
-        actionIcons.appendChild(pencilImage);
+        //TODO:
+        fetch('/auth/username')
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                return;
+            }
+        })
+        .then(user => {
+            console.log(user)
+            if (!user) {
+                return;
+            } else if (user.username === post.username) {
+                actionIcons.appendChild(pencilImage); 
+            }
+        });
+
 
         commentFooter.appendChild(createdAt);
         commentFooter.appendChild(actionIcons);

@@ -33,23 +33,14 @@ body {
     padding: 1.25rem
 }
 
-.comment-widgets .comment-row:hover {
-    background: rgba(0, 0, 0, 0.02);
-    cursor: pointer
-}
+
 
 .comment-widgets .comment-row {
     border-bottom: 1px solid rgba(120, 130, 140, 0.13);
     padding: 15px
 }
 
-.comment-text:hover {
-    visibility: hidden
-}
 
-.comment-text:hover {
-    visibility: visible
-}
 
 .label {
     padding: 3px 10px;
@@ -99,4 +90,22 @@ body {
 
 .mb-100 {
     margin-bottom: 100px
+}
+
+.delete-btn {
+    margin-right: 6%;
+
+}
+
+.confirmation-container {
+    margin-right: 6%;
+}
+
+#confirm-txt {
+    white-space: nowrap;
+    text-align: center;
+}
+
+#cancel-btn {
+    margin-left: 0.25em;
 }

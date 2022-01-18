@@ -43,15 +43,18 @@ hr {
     letter-spacing: 2px;
     text-decoration: none;
     text-transform: uppercase;
-    color: #000;
+    color: rgb(255, 255, 255);
     cursor: pointer;
-    border: 2px solid;
+    border: 2px solid black;
     padding: 0.25em 0.5em;
-    box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+    box-shadow: 1px 1px 0px 0px black, 2px 2px 0px 0px black, 3px 3px 0px 0px black;
     position: relative;
     user-select: none;
     -webkit-user-select: none;
-    
+    background-image: url(../rust-texture.jpg);
+    background-size: contain;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .button:active {
