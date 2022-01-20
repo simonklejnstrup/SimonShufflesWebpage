@@ -2,13 +2,29 @@ const pathname = window.location.pathname;
 const threadId = pathname.substring(17);
 const headerWrapper = document.querySelector('#header-wrapper');
 const threadWrapper = document.querySelector('#thread-wrapper');
+const threadTable = document.getElementById('thread-wrapper');
 
 const socket = io();
+
+async function getCurrentUsername() {
+    const username = await fetch('/auth/username')
+                        .then(res => {
+
+                        if (!res.ok) {
+                            return { username: 'Anonymous' };
+                        } else {
+                            return res.json();
+                            } 
+                        })
+                        .then(res => {
+                            return res.username;
+                        })
+    return username;
+    };
 
 fetch(`/api/threads/${threadId}`) 
 .then((res) => {
     if (!res.ok) {
-        console.log(res)
         toastr.error('Could not fetch thread from API');
         setTimeout(() => location.href= '/msgboard', 1500);
     } else {
@@ -26,21 +42,8 @@ fetch(`/api/threads/${threadId}`)
     const cancelBtn = document.getElementById('cancel-btn');
     const confirmText = document.getElementById('confirm-txt');
 
-    fetch('/auth/username')
-    .then(res => {
-        if (res.ok) {
-            return res.json();
-        } else {
-            return;
-        }
-    })
-    .then(user => {
-        console.log(user)
-        if (!user) {
-            return;
-        } else if (user.username === thread.posts[0].username) {
-            deleteBtn.hidden = false;  
-        }
+    getCurrentUsername().then(currentUsername => {
+        currentUsername !== 'Anonymous' && currentUsername === thread.posts[0].username ? deleteBtn.hidden = false : deleteBtn.hidden = true; 
     });
 
     // Add eventlisteners til ok, cancel & delete buttons
@@ -57,27 +60,11 @@ fetch(`/api/threads/${threadId}`)
         cancelBtn.hidden = true;
         confirmText.hidden = true;
     });
-
-
-    
-    
-    
-
     
     thread.posts.map(post => {
 
         displayNewPost(post);
 
-        // threadWrapper.insertAdjacentHTML('afterbegin', 
-        // `<div class="d-flex flex-row comment-row" >             
-        // <div class="comment-text w-100">
-        // <p class="author">${escapeHTML(post.username)}</p>
-        // <div class="comment-footer"> 
-        // <span class="date">${post.createdAt}</span> 
-        // <span class="action-icons text-center"> <img onclick=editPost(${post.postId}) class="pencil" alt="pencil" src="../../assets/pencil.png"> </span>
-        // <p class="m-b-5 m-t-10">${escapeHTML(post.content)}</p>
-        // </div>
-        // </div>`);
     });
 })
 .catch(error => {
@@ -96,50 +83,38 @@ function deleteThread() {
             setTimeout(() => location.href= '/msgboard', 1500);
 
         }
-    })
+    })  
 }
 
 async function submitNewPost() {
 
-    const username = await fetch('/auth/username')
-                        .then(res => {
-                            
-                            if (!res.ok) {
-                                return { username: 'Anonymous' };
-                            } else {
-                                return res.json();
-                            } 
-                        })
-                        .then(res => {
-                            console.log(res.username)
-                            return res.username;
-                        });
-
-    fetch(`/api/threads/newpost/${threadId}`, {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json; charset=UTF-8' },
-        body: JSON.stringify({
-        username: username,
-        content: document.getElementById('new-post-content').value
+    getCurrentUsername().then(currentUsername => {
+        fetch(`/api/threads/newpost/${threadId}`, {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json; charset=UTF-8' },
+            body: JSON.stringify({
+            username: currentUsername,
+            content: document.getElementById('new-post-content').value
+            })
         })
-    })
-    .then(res => {
-        if (res.ok) {
-            return res.json();
-        } else {
-            toastr.error('Server error. Could not create post');
-        }
-    })
-    .then(dbResponse => {
-
-        newPost = dbResponse.value.posts.at(-1);
-        socket.emit('new-post', newPost);
-        document.getElementById('new-post-content').value = '';
-
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                toastr.error('Server error. Could not create post');
+            }
+        })
+        .then(dbResponse => {
+    
+            newPost = dbResponse.value.posts.at(-1);
+            socket.emit('new-post', newPost);
+            document.getElementById('new-post-content').value = '';
+        });
     });
+
 }
 
-async function editPost(threadId, postId, newContent) {
+async function editPost(postId, newContent) {
     
     const threadArray = await fetch('/api/threads/editpost', {
         method: 'PATCH',
@@ -166,125 +141,112 @@ async function editPost(threadId, postId, newContent) {
 }
 
 socket.on('new-post', newPost => {
-    console.log('linje 108', newPost)
     displayNewPost(newPost); 
 });
 
 
-function displayNewPost(post) {
+async function displayNewPost(post) {
 
-    const commentOuterContainer = document.createElement('div');
-        const commentInnerContainer = document.createElement('div');
-        const authorText = document.createElement('p');
-        const commentFooter = document.createElement('div');
-        const createdAt = document.createElement('span');
-        const actionIcons = document.createElement('span');
-        const pencilImage = document.createElement('img');
-        const postContent = document.createElement('p');
+    let lastUpdatedAtMsg = '';
 
-        //ADD CLASSES, INNERHTML AND EVENTLISTENER
+    let row = threadTable.insertRow();
 
-        commentOuterContainer.classList.add('d-flex', 'flex-row', 'comment-row');
-        commentInnerContainer.classList.add('comment-text', 'w-100');
+    fetch(`/api/usersByUsername/${post.username}`)
+    .then(res => {
+        if (!res.ok) {
+            return { username: 'Anonymous' }
+        } else {
+            return res.json();
+        }
+    })
+    .then(user => {
 
-        authorText.className = 'author';
-        authorText.innerHTML = escapeHTML(post.username);
+        if (user.username === 'Anonymous') {
+            const userInfoCell = row.insertCell()
+            userInfoCell.classList.add('w-25', 'user-info', 'text-center');
+            userInfoCell.innerHTML =    `<div  class="comment-text w-100">
+                                                <h5 class="author">${escapeHTML(post.username)}</h5>
+                                            </div>`
 
-        commentFooter.className = 'comment-footer';
+            const contentCell = row.insertCell();
+            contentCell.classList.add('w-75', 'p-3');
+            contentCell.innerHTML =    `<div id="comment-footer" class="comment-footer"> 
+                                                <p class="date">${post.createdAt}</p>
+                                                <p id="post-content" class="m-b-5 m-t-10">${escapeHTML(post.content)}</p>
+                                                </div>
+                                            ` 
+        } else {
 
-        createdAt.className = 'date';
-        createdAt.innerHTML = post.createdAt;
-
-        actionIcons.classList.add('action-icons', 'text-center') ;
-
-        pencilImage.alt = 'pencil';
-        pencilImage.className = 'pencil';
-        pencilImage.src = '../../assets/pencil.png';
-        pencilImage.addEventListener('click', () => {
-
-            //Remove pencilImage
-            actionIcons.removeChild(pencilImage);
-
-            //Create new textarea for inputting edited message
-            const editInput = document.createElement('textarea');
-            editInput.name = 'edit-input';
-            editInput.id = 'edit-input';
-            editInput.cols = 60;
-            editInput.rows = 10;
-            editInput.style = 'resize: none'
-            editInput.value = post.content;
-            
-            //Create container for editInput
-            const editInputContainer = document.createElement('span');
-
-            //Create button for completion
-            const submitButton = document.createElement('button');
-            submitButton.type = 'submit';
-            submitButton.id = 'submit';
-            submitButton.innerHTML = 'Done';
-            submitButton.addEventListener('click', async () => {
-                await editPost(threadId, post.postId, editInput.value)
-                        .then(editedPost => {
-                            if (editedPost.isEmpty) {
-                                toastr.error('An error has occured. Unable to update post');
-                                return;
-                            } else {
-                                postContentFromDOM.innerHTML = escapeHTML(editedPost.content);
-                                commentFooter.removeChild(submitButton);
-                                actionIcons.appendChild(pencilImage);
-                                editInputContainer.replaceWith(postContentFromDOM);
-                            }})
-                        .catch(error => {
-                        console.log("TCL: error", error)
-                        });        
-            });
-
-            editInputContainer.appendChild(editInput);
-            
-            commentFooter.appendChild(submitButton);
-
-            const postContentFromDOM = document.getElementById('post-content');
-
-            postContentFromDOM.replaceWith(editInputContainer);
-
-        })
-
-        postContent.classList.add('m-b-5', 'm-t-10');
-        postContent.id = 'post-content';
-        postContent.innerHTML = escapeHTML(post.content);
-
-        // APPEND
-
-        //TODO:
-        fetch('/auth/username')
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                return;
+            const userInfoCell = row.insertCell()
+            userInfoCell.classList.add('w-25', 'user-info', 'text-center');
+            userInfoCell.innerHTML =    `<div  class="comment-text w-100">
+                                                <h5 class="author mb-2">${escapeHTML(post.username)}</h5>
+                                                <p class="date mb-1">Joined: ${user.joinedAt}</p> 
+                                                <p class="date">Postcount: ${user.postCount}</p>
+                                            </div>`
+            if (post.lastUpdatedAt) {
+                lastUpdatedAtMsg = `<p class="last-updated-at mt-4">Last updated: ${post.lastUpdatedAt}</p>`
             }
-        })
-        .then(user => {
-            console.log(user)
-            if (!user) {
-                return;
-            } else if (user.username === post.username) {
-                actionIcons.appendChild(pencilImage); 
-            }
-        });
+        
+        
+            const contentCell = row.insertCell();
+            contentCell.classList.add('w-75', 'p-3');
+            contentCell.innerHTML =    `<div id="comment-footer" class="comment-footer"> 
+                                                <p class="date">${post.createdAt}</p>
+                                                <p id="post-content" class="m-b-5 m-t-10">${escapeHTML(post.content)}</p>
+                                                </div>
+                                                ${lastUpdatedAtMsg}
+                                            ` 
+        }
+    
 
+    getCurrentUsername().then(currentUsername => {
 
-        commentFooter.appendChild(createdAt);
-        commentFooter.appendChild(actionIcons);
-        commentFooter.appendChild(postContent);
+    if (currentUsername !== 'Anonymous' && currentUsername === post.username) {
+        const editCell = row.insertCell();
+        editCell.classList.add('w-75', 'p-3');
+        editCell.innerHTML = '<button class="button pull-right">Edit</button>';
+        editCell.onclick = executeEditPostFunction;
+    }
 
-        commentInnerContainer.appendChild(authorText);
-        commentInnerContainer.appendChild(commentFooter);
+    let currentStateOfPost = replaceFixedPostWithTextarea;
 
-        commentOuterContainer.appendChild(commentInnerContainer);
+    function executeEditPostFunction() {
+        currentStateOfPost();
+    };
 
-        threadWrapper.appendChild(commentOuterContainer)
+    function replaceFixedPostWithTextarea() {
+        currentStateOfPost = replaceTextareaWithFixedPost;
+        row.cells[1].innerHTML = `<textarea id="edited-post" style="resize: none" cols="60" rows="10" class="m-b-5 m-t-10">${escapeHTML(post.content)}</textarea>`;
+        row.cells[2].innerHTML = '<button class="button green-button pull-right">Done</button>';
+        
+    };
+
+    async function replaceTextareaWithFixedPost() {
+        currentStateOfPost = replaceFixedPostWithTextarea;
+
+        const editedPost = document.getElementById('edited-post').value;
+
+        await editPost(post.postId, editedPost)
+                .then(editedPost => {
+                    if (editedPost.isEmpty) {
+                        toastr.error('An error has occured. Unable to update post');
+                        return;
+                    } else {
+                        row.cells[1].innerHTML =    `<div id="comment-footer" class="comment-footer"> 
+                                                        <p id="post-content" class="m-b-5 m-t-10">${escapeHTML(editedPost.content)}</p>
+                                                    </div>
+                                                    <p class="last-updated-at mt-4">Last updated: ${editedPost.lastUpdatedAt}</p>`;
+                        row.cells[2].innerHTML = '<button class="button pull-right">Edit</button>';
+                    }})
+                .catch(error => {
+                console.log(error)
+                }); 
+    };
+    })  
 }
+
+)}
 
 document.getElementById('submit-new-post').addEventListener('click', submitNewPost);
 

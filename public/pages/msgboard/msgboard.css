@@ -1,12 +1,21 @@
-.card a {
+.thread-title a {
     font-family: Rubik;
     margin: 0 10 5 10;
     text-decoration: none;
-    color: rgb(110, 0, 0);
+    color: rgb(37, 116, 85);
+    
     font-size: x-large;
 }
 
-.new-thread-top {
+p {
+    font-style: normal;
+    font-size: smaller;
+}
+
+.user-info {
+    border-left: 2px solid #690d0d; 
     
 }
+
+
 

@@ -9,6 +9,8 @@ const server = http.createServer(app);
 import { Server } from "socket.io";
 const io = new Server(server);
 
+
+
 const fifteenMinutes = 1000 * 60 * 15;
 
 app.use(express.static('public'));
@@ -38,15 +40,17 @@ app.use(adminRouter);
 
 // Socket.io
 io.on('connection', (socket) => {
-    console.log("A user connected: {id: ", socket.id, "}")
-})
-
-io.on('connection', socket => {
+    console.log("A user connected: {id: ", socket.id, "}");
     socket.on('new-post',  newPost => {
         io.emit('new-post', newPost)
 
     })
+
 })
+
+
+
+
 
 
 /* Configure server */

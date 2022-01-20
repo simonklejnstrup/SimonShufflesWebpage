@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,500;1,300;1,900&display=swap');
 
-* {
-    /* background-image: url('../rust-texture.jpg'); */
-
-}
 
 textarea {
     resize: none;
@@ -14,7 +10,7 @@ input {
     outline: none;
 }
 
-.date, .author {
+.date{
     color: darkgray
 }
 
@@ -57,6 +53,11 @@ hr {
     text-align: center;
 }
 
+.green-button {
+    background-image: url(../green-rust.jpg);
+    background-size: contain;
+}
+
 .button:active {
   box-shadow: 0px 0px 0px 0px;
   top: 5px;
@@ -69,3 +70,4 @@ hr {
       padding: 0.25em 0.75em;
     }
   }
+

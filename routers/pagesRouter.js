@@ -4,15 +4,11 @@ const router = express.Router();
 import { createPageWithoutSubnav, createPageWithSubnav } from '../util/render.js'
 
 
-let threadId = '';
-
-
-/* Ready the pages */
-/* Ready the pages */
 /* Ready the pages */
 
 const frontpagePage = createPageWithoutSubnav("frontpage/frontpage.html", { 
-    title: 'Simon Shuffles | Welcome'
+    title: 'Simon Shuffles | Welcome',
+    cssTag: '<link rel="stylesheet" href="../../pages/frontpage/frontpage.css">'
 });
 
 const msgboardPage = createPageWithSubnav("msgboard/msgboard.html", { 
@@ -40,8 +36,6 @@ const threadPage = createPageWithSubnav("threadpage/threadpage.html", {
 });
 
 
-/* Serve endpoints */
-/* Serve endpoints */
 /* Serve endpoints */
 
 router.get("/", (req, res) => {

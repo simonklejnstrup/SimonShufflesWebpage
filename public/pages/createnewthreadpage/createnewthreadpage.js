@@ -28,9 +28,6 @@ async function getUsername() {
                     });
 }
 
-
-
-
 async function createThread() {
     const currentUsername = await getUsername()
                                     .then( username => {

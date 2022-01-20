@@ -35,10 +35,11 @@
 [ ] 
 [x] Grundigt kig på createnewthreadpage.js
 [ ]
-[ ] Lave info på msgboard: Postcount på hver tråd
-[ ] - Lave info om antal visninger på hver tråd 
-[ ] - Lave info om seneste svar i tråden, for hver tråd
-[ ] - Join Date visninf for hjer medlem
+- [x] Lave info på msgboard: Postcount på hver tråd
+- [ ] - Lave info om antal visninger på hver tråd 
+- [x] - Lave info om seneste svar i tråden, for hver tråd
+- [ ] - Join Date visninf for hjer medlem
+- [ ] - Adminpage: rækker til joinedAt og postcount
 [ ] - "#11" nummerering af hver post i en tråd
 [ ]
 
@@ -53,7 +54,8 @@
 
 [ ] Gør så OP kan edit'ere titlen på tråden
 
-[ ] Fix edit comment på alle andre end den første comment i tråden 
+- [ ] Fix edit comment på alle andre end den første comment i tråden 
+- [ ] Fix socket ikke kan håndtere linjeskift
 
 TODO's i koden
 [ ] pagesRouter 

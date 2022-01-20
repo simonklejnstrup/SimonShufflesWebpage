@@ -1,3 +1,5 @@
+
+
 .carousel-item {
     
     height: 65vh;
@@ -8,3 +10,7 @@
     -o-background-size: cover;
     background-size: cover;
   }
+
+h4 {
+    color: white;
+}

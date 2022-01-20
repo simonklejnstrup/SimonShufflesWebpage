@@ -13,11 +13,27 @@ body {
     width: 1em;
 }
 
+.author {
+    color: black;
+    margin-bottom: 0;
+    
+}
+
 
 .date {
     font-style: normal;
     font-size: smaller;
     color: darkgray;
+    margin-top: 0.1em;
+}
+
+.last-updated-at {
+    font-style: normal;
+    font-size: smaller;
+    color: rgb(102, 49, 49);
+    
+    margin-bottom: 0;
+    
 }
 
 .card-no-border .card {
@@ -109,3 +125,12 @@ body {
 #cancel-btn {
     margin-left: 0.25em;
 }
+
+.user-info {
+    border-right: 2px solid #690d0d; 
+
+
+}
+
+
+ 

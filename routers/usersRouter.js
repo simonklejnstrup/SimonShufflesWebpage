@@ -20,7 +20,28 @@ router.get('/api/users/:userId', async (req, res) => {
 
     const options = {
         // Exclude _id from the returned document
-        projection: { _id: 0, username: 1, userId: 1 }, // TODO: Skal rettes til
+        projection: { _id: 0, username: 1, userId: 1 }, 
+      };
+
+    await connectDB()
+
+    const user = await collection.findOne(filter, options);
+
+    if (user === null){
+        // 404 Not found
+        res.sendStatus(404);
+    } else {
+        res.send(user);
+    }   
+});
+
+router.get('/api/usersByUsername/:username', async (req, res) => {
+
+    const filter = { "username" : req.params.username};
+
+    const options = {
+        // Exclude _id from the returned document
+        projection: { _id: 0, username: 1, userId: 1, joinedAt: 1, postCount: 1 }, 
       };
 
     await connectDB()
@@ -39,11 +60,10 @@ router.get('/api/users/:userId', async (req, res) => {
 router.post('/api/users', async (req, res) => {
     if ( validator.isEmpty(req.body.username, { ignore_whitespace: true }) 
         || validator.isEmpty(req.body.email, { ignore_whitespace: true }) 
-        || validator.isEmpty(req.body.password, { ignore_whitespace: true })
-        ){
-        //400 Bad request
-        res.sendStatus(400);
-        return
+        || validator.isEmpty(req.body.password, { ignore_whitespace: true }))
+        {   //400 Bad request
+            res.sendStatus(400);
+            return
     }
     else if (!validator.isEmail(req.body.email)){
         //422 (Unprocessable Entity)
@@ -54,6 +74,7 @@ router.post('/api/users', async (req, res) => {
     newUser.username = req.body.username;
     newUser.email = req.body.email;
     newUser.userId = uuidv4();
+    newUser.joinedAt = new Date().toLocaleDateString();
 
     await encrypt(req.body.password)
         .then(encryptedPassword => { 
@@ -111,6 +132,19 @@ router.patch('/api/users/:userId', async (req, res) => {
 
     res.send(dbResponse);
 })
+
+export async function incrementPostcount(username) {
+
+    await connectDB();
+
+    const filter = { username: username };
+
+    const update = { $inc: { postCount: 1} };
+
+    const dbResponse = await collection.updateOne(filter, update);
+
+    return dbResponse;
+}
 
 
 

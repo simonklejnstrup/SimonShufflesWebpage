@@ -1,7 +1,3 @@
-/***************************************************************************************************
----------GLOBAL VARIABLES---------GLOBAL VARIABLES---------GLOBAL VARIABLES---------GLOBAL VARIABLES
-***************************************************************************************************/
-
 const allUsersDiv = document.getElementById('all-users-div');
 const showAllUsersBtn = document.getElementById('show-all-users-btn')
                                 .addEventListener('click', () => {
@@ -9,45 +5,35 @@ const showAllUsersBtn = document.getElementById('show-all-users-btn')
                                 showAllUsers();
                                 }) 
 
-
-/**************************************************************************************************
----------FUNCTIONS---------FUNCTIONS---------FUNCTIONS---------FUNCTIONS---------FUNCTIONS---------
-**************************************************************************************************/
-
-
-
       //---------------\\
      //-----TOGGLERS----\\
     //-------------------\\
 
 function toggleAllUsersDiv() {
 
-    if (allUsersDiv.hidden) {
-        allUsersDiv.hidden = false;
-        toggleShowAllUsersBtnText();
-    } else {
-        allUsersDiv.hidden = true
-        toggleShowAllUsersBtnText();
-    }
+    allUsersDiv.hidden = !allUsersDiv.hidden;
+    toggleShowAllUsersBtnText();
+
 }
 
 function toggleShowAllUsersBtnText(){
 
-    if (allUsersDiv.hidden) {
-        document.getElementById('show-all-users-btn').innerHTML = 'Show All Users';
-    } else {
-        document.getElementById('show-all-users-btn').innerHTML = 'Collapse User Table';
-    }
+    allUsersDiv.hidden ?    document.getElementById('show-all-users-btn').innerHTML = 'Show All Users' :
+                            document.getElementById('show-all-users-btn').innerHTML = 'Collapse User Table'; 
+    
 }
 
 
 function toggleUpdate_DoneBtn(row){
 
-    if (row.cells[1].innerHTML === '<button class="button" type="button" id="update_done-btn">Update</button>') {
-        row.cells[1].innerHTML = '<button class="button" type="button" id="update_done-btn">Done</button>';
-    } else {
-        row.cells[1].innerHTML = '<button class="button" type="button" id="update_done-btn">Update</button>';
-    }
+    row.cells[1].innerHTML === '<button class="button" type="button" id="update_done-btn">Update</button>' ?
+    row.cells[1].innerHTML = '<button class="button green-button" type="button" id="update_done-btn">Done</button>' :
+    row.cells[1].innerHTML = '<button class="button" type="button" id="update_done-btn">Update</button>'
+    // if (row.cells[1].innerHTML === '<button class="button" type="button" id="update_done-btn">Update</button>') {
+    //     row.cells[1].innerHTML = '<button class="button green-button" type="button" id="update_done-btn">Done</button>';
+    // } else {
+    //     row.cells[1].innerHTML = '<button class="button" type="button" id="update_done-btn">Update</button>';
+    // }
 }
 
       //------------------------\\
@@ -56,7 +42,7 @@ function toggleUpdate_DoneBtn(row){
 
 function showAllUsers() {
 
-    const usersTable = document.getElementById('users-wrapper'); 
+    const usersTable = document.getElementById('users-wrapper');
     usersTable.innerHTML = '';
 
     fetch('/api/users')
@@ -88,7 +74,7 @@ function showAllUsers() {
                     row.cells[2].innerHTML = `<input id="new-username" type="text" value="${escapeHTML(user.username)}"></input>`;
                     row.cells[3].innerHTML = `<input id="new-email" type="text" value="${escapeHTML(user.email)}"></input>`;
                 }
-                if (row.cells[1].innerHTML === '<button class="button" type="button" id="update_done-btn">Done</button>') {
+                if (row.cells[1].innerHTML === '<button class="button green-button" type="button" id="update_done-btn">Done</button>') {
                     updateUser(user.userId)
                     .then(updatedUser => {
                         row.cells[2].innerHTML = `<h5>${escapeHTML(updatedUser.value.username)}</h5>`;

@@ -1,7 +1,9 @@
+
 import express from 'express';
 import { connectDB, db } from '../database/connectDB.js';
 import { v4 as uuidv4 } from 'uuid';
 import validator from 'validator';
+import { incrementPostcount } from '../routers/usersRouter.js'
 
 const router = express.Router();
 const collection = db.collection('threads');
@@ -17,9 +19,9 @@ router.get('/api/threads', async (req, res) => {
 
 router.get('/api/threads/:threadId', async (req, res) => {
 
-    const filter = { "threadId" : req.params.threadId} ;
+    const filter = { "threadId" : req.params.threadId};
 
-    await connectDB()
+    await connectDB();
 
     const thread = await collection.findOne(filter);
 
@@ -53,6 +55,7 @@ router.post('/api/threads/newpost/:threadId', async (req, res) => {
                 // 500 Internal Server Error
                 res.sendStatus(500);
             } else {
+                incrementPostcount(req.body.username)
                 // 201 Created
                 res.status(201).json(result);
             }
@@ -60,6 +63,8 @@ router.post('/api/threads/newpost/:threadId', async (req, res) => {
     }
 
 });
+
+
 
 router.post('/api/threads', async (req, res) => {
 
@@ -70,9 +75,7 @@ router.post('/api/threads', async (req, res) => {
                                   username: req.body.user,
                                   content: req.body.content,
                                 }]
-                        
                     }
-    
 
     await connectDB();
 
