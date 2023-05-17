@@ -1,0 +1,19 @@
+Implement new features and pages
+================================
+
+- add new folder in pages w/ necessary HTML, js and css
+    - remember to add scripttag in the bottom of HTML 
+
+- pagesRouter:  
+    - serve page 
+
+- implement new router if necessary 
+
+- app.js:
+    - import and use new router
+
+
+db.users.update( {"username": "admin"},{ $set:{ password: "$2a$12$uvcLamll3Q64LVYgExaoLOIzDrP0AAf681xFy2Lz86cHY5PoMjStu" } } )
+
+db.users.insertOne({ "username": "admin", "email": "a@a.dk", "userId": "111", "joinedAt":"5/17/2023", "password": "$$2a$12$/g5IVtop3zoRBWnPVI8jH.Ddgwqd6f.qrwgi3LNP.Kke5lrr7YWGa", "postCount": 2, "isAdmin": true })
+
