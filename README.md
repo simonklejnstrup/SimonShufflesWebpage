@@ -23,9 +23,9 @@ This page is a online businesscard but also contain a message board with users, 
 
 Clone this repository and run app.js
 
-´´´
+```
 node app.js
-´´´
+```
 
 ## Authors
 
